@@ -1,0 +1,9 @@
+{
+  "name": "careercompass",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CareerCompass — career and learning route planner",
+  "engines": {
+    "node": ">=18"
+  }
+}
