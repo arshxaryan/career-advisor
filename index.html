@@ -130,8 +130,102 @@
   /* ---------- Hero ---------- */
 
   .hero{
+    position: relative;
+    overflow: hidden;
     padding: 24px 0 40px;
     border-bottom: 1px solid var(--border-soft);
+  }
+
+  .hero-grid{ position: relative; z-index: 1; }
+
+  .background-paths{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.58;
+    overflow: hidden;
+  }
+
+  .background-paths svg{
+    width: 100%;
+    height: 100%;
+    min-width: 696px;
+    color: var(--brass);
+    overflow: visible;
+  }
+
+  .background-paths path{
+    fill: none;
+    stroke: currentColor;
+    stroke-dasharray: 18 34;
+    animation: background-path-flow 24s linear infinite;
+  }
+
+  .background-paths .paths-left{
+    animation-duration: 29s;
+    animation-direction: reverse;
+    opacity: 0.55;
+  }
+
+  .background-paths .paths-right{ opacity: 0.7; }
+
+  @keyframes background-path-flow{
+    from{ stroke-dashoffset: 0; }
+    to{ stroke-dashoffset: -520; }
+  }
+
+  .image-stream{
+    position: absolute;
+    inset: 0 -12%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  }
+
+  .image-stream-card{
+    --stream-delay: 0s;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    width: clamp(74px, 10vw, 120px);
+    aspect-ratio: 0.72;
+    border: 1px solid rgba(201,160,99,0.65);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-raised);
+    box-shadow: 0 0 22px rgba(0,0,0,0.55);
+    animation: image-stream-right 18s linear infinite var(--stream-delay);
+  }
+
+  .image-stream-card.left{ animation-name: image-stream-left; }
+
+  .image-stream-card img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: saturate(0.55) sepia(0.18) contrast(1.05);
+  }
+
+  @keyframes image-stream-right{
+    0%{ transform: translate3d(-50%, -50%, 0) rotate(-8deg) scale(0.08); opacity: 0; }
+    7%{ opacity: 0.85; }
+    100%{ transform: translate3d(31vw, -50%, 0) rotate(20deg) scale(2.35); opacity: 0; }
+  }
+
+  @keyframes image-stream-left{
+    0%{ transform: translate3d(-50%, -50%, 0) rotate(8deg) scale(0.08); opacity: 0; }
+    7%{ opacity: 0.85; }
+    100%{ transform: translate3d(-31vw, -50%, 0) rotate(-20deg) scale(2.35); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .image-stream-card{ animation-play-state: paused; }
+    .background-paths path{ animation-play-state: paused; }
   }
 
   .hero-grid{
@@ -770,6 +864,42 @@
   </div>
 
   <header class="hero">
+    <div class="background-paths" aria-hidden="true">
+      <svg viewBox="0 0 696 316" preserveAspectRatio="xMidYMid slice" role="presentation">
+        <g class="paths-left" stroke-width="0.65">
+          <path d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875"/>
+          <path d="M-385 -195C-385 -195 -317 210 147 337C611 464 679 869 679 869"/>
+          <path d="M-390 -201C-390 -201 -322 204 142 331C606 458 674 863 674 863"/>
+          <path d="M-395 -207C-395 -207 -327 198 137 325C601 452 669 857 669 857"/>
+          <path d="M-400 -213C-400 -213 -332 192 132 319C596 446 664 851 664 851"/>
+          <path d="M-405 -219C-405 -219 -337 186 127 313C591 440 659 845 659 845"/>
+          <path d="M-410 -225C-410 -225 -342 180 122 307C586 434 654 839 654 839"/>
+          <path d="M-415 -231C-415 -231 -347 174 117 301C581 428 649 833 649 833"/>
+          <path d="M-420 -237C-420 -237 -352 168 112 295C576 422 644 827 644 827"/>
+        </g>
+        <g class="paths-right" stroke-width="0.65" transform="scale(-1 1) translate(-696 0)">
+          <path d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875"/>
+          <path d="M-385 -195C-385 -195 -317 210 147 337C611 464 679 869 679 869"/>
+          <path d="M-390 -201C-390 -201 -322 204 142 331C606 458 674 863 674 863"/>
+          <path d="M-395 -207C-395 -207 -327 198 137 325C601 452 669 857 669 857"/>
+          <path d="M-400 -213C-400 -213 -332 192 132 319C596 446 664 851 664 851"/>
+          <path d="M-405 -219C-405 -219 -337 186 127 313C591 440 659 845 659 845"/>
+          <path d="M-410 -225C-410 -225 -342 180 122 307C586 434 654 839 654 839"/>
+          <path d="M-415 -231C-415 -231 -347 174 117 301C581 428 649 833 649 833"/>
+          <path d="M-420 -237C-420 -237 -352 168 112 295C576 422 644 827 644 827"/>
+        </g>
+      </svg>
+    </div>
+    <div class="image-stream" aria-hidden="true">
+      <div class="image-stream-card" style="--stream-delay: -1s"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=70" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -7s"><img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=300&q=70" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -13s"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&q=70" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -4s"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&q=70" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -3s"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=300&q=70" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -9s"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=300&q=70" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -15s"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=300&q=70" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -6s"><img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&q=70" alt=""></div>
+    </div>
     <div class="hero-grid">
       <div class="hero-copy">
         <h1>Find true north<br><em>for your career.</em></h1>
