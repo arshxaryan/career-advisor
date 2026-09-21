@@ -1,0 +1,13 @@
+{
+  "name": "careercompass",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CareerCompass — personalized student career guide & learning route planner",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
