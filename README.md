@@ -1,26 +1,14 @@
 # CareerCompass — Student Career Advisor & Learning Route Planner
 
-CareerCompass is an interactive, dark-brass themed AI career advisor website designed to guide students based on their academic background, interests, skills, and work style.
+CareerCompass is a student guidance website with career planning, exam roadmaps, and student support tools. Its Electric Orchard design pairs expressive violet with fresh lime accents, oversized Bricolage Grotesque headings, and a warm lavender canvas, with a one-click dark mode.
 
 ---
 
-## Quick Start (Run Locally)
+## Firebase Hosting
 
-### Option 1: Double-Click (Recommended on Windows)
-Double-click **`start-app.bat`**.
-* Launches the local server automatically.
-* Opens `http://localhost:3000` in your default browser.
-* Reads your Gemini API key from `.env.local` securely.
+This project is configured for Firebase project `careercompass-77eae`. Follow [FIREBASE-DEPLOY.md](FIREBASE-DEPLOY.md) to sign in, configure the Gemini API key secret, and deploy Hosting and Cloud Functions.
 
-### Option 2: Command Line
-```bash
-npm start
-```
-or
-```bash
-node server.js
-```
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+Users can create an account with email/password or sign in with Google. Signed-in users sync saved careers and study/roadmap progress using Firestore. Mood history, peer notes, and personal API keys stay in the current browser.
 
 ---
 
@@ -42,16 +30,16 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
    * 1-click clipboard copying, downloadable `.txt` route logs, and print/PDF support.
 7. **Resilient AI Backend**:
    * Multi-model cascade (`gemini-3.5-flash`, `gemini-flash-lite-latest`, `gemini-3.8-flash`) ensures seamless responses even during traffic spikes.
-
----
-
-## Deploy on Vercel
-
-1. Push this folder to a GitHub repository.
-2. Import the repository in [vercel.com](https://vercel.com).
-3. In **Settings → Environment Variables**, add:
-   * `GEMINI_API_KEY` = your API key from Google AI Studio.
-4. Deploy! Vercel will host `index.html` and run the serverless function at `/api/generate-careers`.
+8. **Exams & Roadmaps**:
+   * Filter an exam guide by category and difficulty, view an illustrative pattern breakdown, and follow a 12-month study checklist saved in browser storage.
+   * Ask the AI recommender for exam ideas based on interests and subject strengths. Exam rules can change; use each exam's official website to verify current details.
+9. **Student Support**:
+   * Quick links to India's 112 emergency number and Tele-MANAS at 14416, plus a local mood check-in history and an optional 60-second breathing exercise.
+   * Aarav is an AI listener, not a person or a therapist. Messages are sent to the configured AI service and are not saved by the page. The Peer Circle is a local-only demo feed, not a public community.
+10. **Career Visualizations & Privacy**:
+    * Career fit radar, comparison bars, animated journey flow, and a quick-exit button that navigates away from the app.
+11. **Real-World Photo Stories**:
+    * Career collaboration, classroom learning, and peer connection photos give the guidance pages a more tangible, real-life feel. Photographs are loaded from Unsplash and Pexels, so they require an internet connection.
 
 ---
 
@@ -59,12 +47,20 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 careercompass/
-├── index.html              # Frontend (dark brass cartography UI, client logic, presets, checklist)
-├── server.js               # Zero-dependency local Node.js server (serves app & proxies API)
-├── start-app.bat           # 1-click Windows launcher (starts server & opens browser)
-├── api/
-│   └── generate-careers.js # Vercel serverless function (for cloud deployment)
-├── package.json            # Project configuration & npm start script
-├── .env.local              # Local environment variables (GEMINI_API_KEY)
+├── .firebaserc              # Default Firebase project alias
+├── firebase.json            # Hosting and Functions deployment configuration
+├── firestore.rules          # Owner-only Firestore data access rules
+├── firebase-config.js       # Public Firebase Web App configuration
+├── account.js               # Sign-in and account data synchronization
+├── index.html               # Frontend, client logic, presets, and checklist
+├── features.css             # Feature layouts and responsive Electric Orchard theme
+├── features.js              # Exam, study plan, support, and career visualization interactions
+├── careers-data.js          # Career data used by the frontend
+├── career-tools.js          # Shared career-planning utilities
+├── functions/
+│   ├── index.js             # Firebase API and health-check function
+│   ├── package.json         # Cloud Function dependencies
+│   └── package-lock.json    # Locked Cloud Function dependencies
+├── FIREBASE-DEPLOY.md       # Firebase setup and deployment instructions
 └── README.md
 ```

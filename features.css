@@ -27,6 +27,21 @@
 .exit-quick-btn{color:#e0a49a;border-color:rgba(193,97,74,.5)}
 .exit-quick-btn:hover{color:#fff;border-color:var(--rust);background:rgba(193,97,74,.16)}
 .top-actions .settings-link-btn{white-space:nowrap}
+.account-button{border-color:var(--brass-dim)!important;color:var(--brass)!important}
+.account-modal{max-width:440px}
+.account-description{color:var(--text-muted);font-size:.88rem;line-height:1.6;margin:-6px 0 20px}
+.account-modal .field{margin-bottom:14px}
+.account-modal input{width:100%;min-height:42px;padding:10px 12px;background:var(--bg-raised);border:1px solid var(--border);border-radius:2px;color:var(--text);font:inherit}
+.account-modal input:focus{outline:2px solid var(--brass-dim);outline-offset:1px}
+.account-submit,.account-google{width:100%;justify-content:center;margin-top:8px}
+.account-form-links{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px}
+.account-form-links .text-link-btn{font-size:.76rem}
+.account-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text-faint);font:.72rem var(--font-mono)}
+.account-divider::before,.account-divider::after{content:"";height:1px;flex:1;background:var(--border-soft)}
+.account-status{min-height:1.2em;margin-top:14px;color:var(--text-muted);font:.75rem/1.5 var(--font-mono)}
+.account-status.account-error{color:#e3a395}
+.account-email-label{color:var(--text-faint);font:.7rem var(--font-mono);text-transform:uppercase}
+.account-email{margin:5px 0 12px;color:var(--text)}
 
 .app-section-page{padding-bottom:24px}
 .feature-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.82fr);gap:30px;align-items:center;padding:36px 0 28px;border-bottom:1px solid var(--border-soft)}

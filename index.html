@@ -862,6 +862,7 @@
         <span id="systemStatusText">Server Online</span>
       </div>
       <button type="button" class="settings-link-btn theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark mode</button>
+      <button type="button" class="settings-link-btn account-button" id="accountButton" onclick="openAccountModal()">Sign in</button>
       <button type="button" class="settings-link-btn" onclick="openSettingsModal()">⚙ Settings</button>
     </div>
   </div>
@@ -1297,6 +1298,42 @@
 
 </div>
 
+<!-- Account & Sync Modal -->
+<div id="accountModal" class="modal-overlay" onclick="if(event.target===this) closeAccountModal()">
+  <div class="modal-box account-modal" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle">
+    <div class="modal-head">
+      <h3 id="accountModalTitle">Your CareerCompass account</h3>
+      <button type="button" class="close-modal-btn" onclick="closeAccountModal()" aria-label="Close account dialog">&times;</button>
+    </div>
+    <p class="account-description">Sign in to sync saved careers and study progress across your devices. Mood history, peer notes, and API keys stay on this device.</p>
+    <form id="accountForm" onsubmit="submitAccountForm(event)">
+      <div class="field">
+        <label class="field-label" for="accountEmailInput">Email</label>
+        <input id="accountEmailInput" type="email" autocomplete="email" required>
+      </div>
+      <div class="field account-password-field">
+        <label class="field-label" for="accountPassword">Password</label>
+        <input id="accountPassword" type="password" autocomplete="current-password" minlength="6" required>
+      </div>
+      <button type="submit" class="btn account-submit" id="accountSubmit">Sign in</button>
+      <div class="account-form-links">
+        <button type="button" class="text-link-btn" id="accountModeToggle" onclick="setAccountFormMode('signup')">New here? Create an account</button>
+        <button type="button" class="text-link-btn" onclick="resetAccountPassword()">Reset password</button>
+      </div>
+    </form>
+    <div id="accountSignedIn" hidden>
+      <p class="account-email-label">Signed in as</p>
+      <p id="accountEmail" class="account-email"></p>
+      <button type="button" class="btn btn-ghost account-submit" onclick="signOutCareerCompass()">Sign out</button>
+    </div>
+    <div id="accountProviders">
+      <div class="account-divider"><span>or</span></div>
+      <button type="button" class="btn btn-ghost account-google" onclick="signInWithGoogle()">Continue with Google</button>
+    </div>
+    <p id="accountStatus" class="account-status" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
 <!-- Settings & API Modal -->
 <div id="settingsModal" class="modal-overlay" onclick="if(event.target===this) closeSettingsModal()">
   <div class="modal-box">
@@ -1305,7 +1342,7 @@
       <button class="close-modal-btn" onclick="closeSettingsModal()">&times;</button>
     </div>
     <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">
-      CareerCompass connects automatically to the local Node.js backend or Vercel serverless function. You can also supply a personal Gemini API key if running without a server.
+      CareerCompass connects to its Firebase API when deployed. You can optionally supply a personal Gemini API key to override the server key.
     </p>
     <div class="field" style="margin-bottom:16px;">
       <label class="field-label" for="customApiKey">Custom Gemini API Key <span class="opt">(Optional Override)</span></label>
@@ -1974,14 +2011,14 @@ Provide all 5 careers in this exact JSON format.`;
       if (res.ok){
         const data = await res.json();
         notice.className = 'notice success';
-        notice.textContent = `Server reachable! Gemini Key: ${data.hasApiKey ? 'Found in .env' : 'Missing in .env'}. Node ${data.nodeVersion}`;
+        notice.textContent = `Server reachable! Gemini key: ${data.hasApiKey ? 'configured' : 'missing'}. Node ${data.nodeVersion}`;
         document.getElementById('systemStatusText').textContent = 'Server Online';
         return;
       }
     } catch(e) {}
 
     notice.className = 'notice error';
-    notice.textContent = 'Could not reach /api/health. Ensure "node server.js" or "start-app.bat" is running.';
+    notice.textContent = 'Could not reach /api/health. Check the local server or deployed API configuration.';
   }
 
   // Health check on load
@@ -2005,9 +2042,15 @@ Provide all 5 careers in this exact JSON format.`;
     displaySavedCareers();
     checkServerHealth();
   });
+  window.addEventListener('careercompass:account-ready', displaySavedCareers);
 </script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js" defer></script>
+<script src="/firebase-config.js" defer></script>
 <script src="/features.js" defer></script>
 <script src="/careers-data.js" defer></script>
 <script src="/career-tools.js" defer></script>
+<script src="/account.js" defer></script>
 </body>
 </html>

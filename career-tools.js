@@ -379,9 +379,10 @@
   window.openRelatedExam = openRelatedExam;
   window.closeCareerModal = closeCareerModal;
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initialize, { once: true });
-  } else {
-    initialize();
-  }
+  window.addEventListener("careercompass:account-ready", () => {
+    renderCareerExplorer();
+    renderSavedCareers();
+  });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initialize, { once: true });
+  else initialize();
 })();

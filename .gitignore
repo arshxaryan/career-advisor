@@ -1,6 +1,11 @@
 .env
 .env.local
-.vercel
+.firebase
 node_modules
-
-.vercel
+functions/node_modules
+functions/.env*
+functions/.secret.local
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+firebase-debug.*.log

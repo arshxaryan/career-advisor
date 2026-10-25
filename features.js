@@ -7,11 +7,11 @@ const EXAMS = [
     url: "https://jeemain.nta.nic.in/"
   },
   {
-    id: "neet-ug", name: "NEET UG", category: "Medical", difficulty: "Advanced", duration: "About 3 hours 20 minutes",
+    id: "neet-ug", name: "NEET UG", category: "Medical", difficulty: "Advanced", duration: "About 3 hours",
     format: "Pen-and-paper test • Physics, Chemistry, Botany and Zoology • check the current NTA bulletin for question and marking rules",
     pattern: [{ label: "Physics", value: 25 }, { label: "Chemistry", value: 25 }, { label: "Botany", value: 25 }, { label: "Zoology", value: 25 }],
     months: ["Map the NCERT syllabus", "Revise Biology consistently", "Practice Physics and Chemistry", "Full-length mock review"],
-    url: "https://exams.nta.ac.in/NEET/"
+    url: "https://neet.nta.nic.in/"
   },
   {
     id: "cat", name: "CAT", category: "Management", difficulty: "Advanced", duration: "About 2 hours",
@@ -30,7 +30,7 @@ const EXAMS = [
   {
     id: "clat", name: "CLAT UG", category: "Law", difficulty: "Intermediate", duration: "2 hours",
     format: "Reading-based objective test • English, Current Affairs, Legal Reasoning, Logical Reasoning and Quantitative Techniques",
-    pattern: [{ label: "English", value: 20 }, { label: "Current Affairs", value: 25 }, { label: "Legal Reasoning", value: 30 }, { label: "Logical & Quant", value: 25 }],
+    pattern: [{ label: "English", value: 20 }, { label: "Current Affairs & GK", value: 25 }, { label: "Legal Reasoning", value: 25 }, { label: "Logical Reasoning", value: 20 }, { label: "Quantitative Techniques", value: 10 }],
     months: ["Build reading consistency", "Learn section strategies", "Practice passage-based sets", "Mocks and error-log revision"],
     url: "https://consortiumofnlus.ac.in/"
   },
@@ -42,11 +42,11 @@ const EXAMS = [
     url: "https://www.icai.org/"
   },
   {
-    id: "gate", name: "GATE", category: "Engineering", difficulty: "Advanced", duration: "3 hours",
+    id: "gate", name: "GATE 2027", category: "Engineering", difficulty: "Advanced", duration: "3 hours",
     format: "Computer-based test • General Aptitude and subject-specific questions • paper structure varies by discipline",
-    pattern: [{ label: "General Aptitude", value: 15 }, { label: "Engineering Mathematics", value: 15 }, { label: "Core subject", value: 70 }],
+    pattern: [{ label: "General Aptitude", value: 15 }, { label: "Chosen test paper", value: 85 }],
     months: ["Set a subject-wise baseline", "Cover fundamentals", "Solve topic-wise problems", "Mock exams and final revision"],
-    url: "https://gate2026.iitg.ac.in/"
+    url: "https://gate2027.iitm.ac.in/"
   },
   {
     id: "nid-dat", name: "NID DAT", category: "Design", difficulty: "Intermediate", duration: "Varies by stage",
@@ -60,7 +60,7 @@ const EXAMS = [
     format: "Computer-based test • language, domain subjects and general test as required by the target university",
     pattern: [{ label: "Language", value: 33 }, { label: "Domain subjects", value: 47 }, { label: "General test", value: 20 }],
     months: ["Confirm target university subjects", "Revise selected domain syllabi", "Practice language and aptitude", "Take timed paper-wise mocks"],
-    url: "https://exams.nta.ac.in/CUET-UG/"
+    url: "https://cuet.nta.nic.in/"
   },
   {
     id: "nda", name: "NDA & NA", category: "Defence", difficulty: "Advanced", duration: "Written test plus later selection stages",
@@ -70,7 +70,7 @@ const EXAMS = [
     url: "https://upsc.gov.in/"
   },
   {
-    id: "nift", name: "NIFT Entrance", category: "Design", difficulty: "Intermediate", duration: "Varies by programme and stage",
+    id: "nift", name: "NIFTEE (NIFT Entrance)", category: "Design", difficulty: "Intermediate", duration: "Varies by programme and stage",
     format: "Programme-specific aptitude and situation tests/interviews as notified • verify the current NIFT admission prospectus",
     pattern: [{ label: "Creative ability", value: 40 }, { label: "Communication", value: 30 }, { label: "Quantitative & reasoning", value: 30 }],
     months: ["Review programme requirements", "Practice drawing and observation", "Develop design problem-solving", "Timed practice and portfolio review"],
@@ -81,7 +81,7 @@ const EXAMS = [
     format: "Computer-based subject-specific entrance test • syllabus and participating institutions vary",
     pattern: [{ label: "Core subject", value: 70 }, { label: "Reasoning", value: 15 }, { label: "Language & aptitude", value: 15 }],
     months: ["Check target university requirements", "Map the subject syllabus", "Practice paper-specific questions", "Mock tests and revision"],
-    url: "https://exams.nta.ac.in/CUET-PG/"
+    url: "https://exams.nta.nic.in/cuet-pg/"
   }
 ];
 
@@ -174,10 +174,11 @@ const EXAM_GUIDES = {
     totalMarks: "120 marks in the recent 120-question format",
     marking: "+1 correct and −0.25 incorrect in the recent pattern; verify the current paper.",
     subjects: [
-      { name: "English Language", split: 20, topics: [["Comprehension and central idea", "Medium"], ["Inference, tone and vocabulary", "Medium"], ["Argument structure", "Hard"]] },
-      { name: "Current Affairs & GK", split: 25, topics: [["National and international events", "Medium"], ["Government policy and institutions", "Medium"], ["Awards, reports and significant developments", "Hard"]] },
-      { name: "Legal Reasoning", split: 30, topics: [["Apply a stated principle to facts", "Medium"], ["Constitutional and legal current affairs", "Hard"], ["Careful passage-based reasoning", "Hard"]] },
-      { name: "Logical Reasoning & Quantitative Techniques", split: 25, topics: [["Critical reasoning and assumptions", "Hard"], ["Short quantitative passages and data", "Medium"], ["Basic arithmetic and interpretation", "Medium"]] }
+      { name: "English Language", split: 22, topics: [["Comprehension and central idea", "Medium"], ["Inference, tone and vocabulary", "Medium"], ["Argument structure", "Hard"]] },
+      { name: "Current Affairs & General Knowledge", split: 24, topics: [["National and international events", "Medium"], ["Government policy and institutions", "Medium"], ["Awards, reports and significant developments", "Hard"]] },
+      { name: "Legal Reasoning", split: 24, topics: [["Apply a stated principle to facts", "Medium"], ["Constitutional and legal current affairs", "Hard"], ["Careful passage-based reasoning", "Hard"]] },
+      { name: "Logical Reasoning", split: 20, topics: [["Critical reasoning and assumptions", "Hard"], ["Identify arguments and conclusions", "Medium"], ["Passage-based logical reasoning", "Hard"]] },
+      { name: "Quantitative Techniques", split: 10, topics: [["Short quantitative passages and data", "Medium"], ["Basic arithmetic and interpretation", "Medium"], ["Tables, graphs and proportional reasoning", "Easy"]] }
     ],
     resources: ["Consortium's official syllabus, sample papers and prior papers", "The Hindu or Indian Express for daily current-affairs reading", "NCERT Class 10 mathematics for quantitative foundations"],
     mistakes: ["Preparing legal provisions by rote instead of applying the passage principle", "Reading current affairs without monthly revision", "Spending too long on a difficult passage"],
@@ -194,7 +195,7 @@ const EXAM_GUIDES = {
     totalMarks: "400 total across four papers (100 each) in the current scheme",
     marking: "Paper-specific rules; objective papers may have negative marking. Passing rules are subject to ICAI regulations.",
     subjects: [
-      { name: "Accounting", split: 30, topics: [["Journal, ledger and trial balance", "Medium"], ["Depreciation, inventory and final accounts", "Hard"], ["Partnership and company accounts", "Hard"]] },
+      { name: "Accounting", split: 30, topics: [["Journal, ledger and trial balance", "Medium"], ["Depreciation, inventory and final accounts", "Hard"], ["Partnership accounts and financial statements", "Hard"]] },
       { name: "Business Laws", split: 25, topics: [["Contract Act concepts and application", "Hard"], ["Sale of Goods and negotiable instruments", "Medium"], ["Company and other applicable laws", "Medium"]] },
       { name: "Quantitative Aptitude", split: 25, topics: [["Ratio, equations and mathematics", "Medium"], ["Statistics and data interpretation", "Hard"], ["Logical reasoning", "Medium"]] },
       { name: "Business Economics", split: 20, topics: [["Demand, supply and markets", "Medium"], ["Production and cost", "Medium"], ["National income and economic policy", "Hard"]] }
@@ -210,13 +211,12 @@ const EXAM_GUIDES = {
     eligible: "Students in the third year or higher of an eligible undergraduate programme, graduates, and specified equivalent qualifications.",
     mode: "Computer-based test",
     attempts: "Usually once annually; no general lifetime cap.",
-    months: "Usually February",
+    months: "GATE 2027 is scheduled for February 6–7 and 13–14, 2027; check the official notice for updates.",
     totalMarks: "100 marks; paper structure includes General Aptitude and the selected test paper.",
     marking: "Negative marks apply to some MCQs; no negative marks for MSQ/NAT in the published pattern. Check the paper-specific brochure.",
     subjects: [
       { name: "General Aptitude", split: 15, topics: [["Verbal ability and grammar", "Medium"], ["Numerical aptitude", "Medium"], ["Logical and spatial reasoning", "Medium"]] },
-      { name: "Engineering Mathematics", split: 15, topics: [["Linear algebra and calculus", "Hard"], ["Probability and statistics", "Medium"], ["Differential equations and numerical methods", "Hard"]] },
-      { name: "Chosen subject paper", split: 70, topics: [["Core subject fundamentals", "Hard"], ["Advanced subject applications", "Hard"], ["Previous-paper problem solving", "Medium"]] }
+      { name: "Chosen test paper", split: 85, topics: [["Review the selected paper's official syllabus", "Medium"], ["Practise paper-specific fundamentals and applications", "Hard"], ["Solve previous-paper questions for the selected code", "Medium"]] }
     ],
     resources: ["Official GATE paper syllabus, sample tests and previous papers", "NPTEL courses from IITs and IISc", "Standard undergraduate textbooks listed by your paper syllabus"],
     mistakes: ["Following a generic syllabus rather than the selected paper's syllabus", "Memorising formulas without practising multi-step problems", "Ignoring MSQ/NAT format and negative-mark distinctions"],
@@ -239,7 +239,7 @@ const EXAM_GUIDES = {
     ],
     resources: ["NID admissions portal: handbook, sample papers and past papers", "National Gallery of Modern Art and museum collections for observation", "Daily sketchbook prompts using ordinary objects and public spaces"],
     mistakes: ["Copying styles instead of developing original ideas", "Practising only drawing while ignoring reasoning and explanation", "Ignoring time, materials and the constraints in a design brief"],
-    similar: ["UCEED", "NIFT Entrance", "MIT Institute of Design DAT"],
+    similar: ["UCEED", "NIFTEE (NIFT Entrance)", "MIT Institute of Design DAT"],
     last30: ["Do timed sketch and design prompts from varied briefs", "Review the official stage format and required materials", "Practise explaining the user, idea and constraints behind each solution", "Prepare portfolio/work samples only if the current stage requests them"]
   },
   "cuet-ug": {
@@ -378,6 +378,8 @@ function initializeFeaturePages() {
   renderPeerFeed();
   updatePeerCount();
 }
+
+window.addEventListener("careercompass:account-ready", restoreStudyPlanPreferences);
 
 function getChartColors() {
   const styles = getComputedStyle(document.documentElement);
@@ -909,7 +911,7 @@ async function talkToAarav() {
     const message = error.name === "TimeoutError" || error.name === "AbortError"
       ? "Aarav is taking longer than expected. Please try again. Your message is still here."
       : error instanceof TypeError
-      ? "Can't reach the CareerCompass server. Start it with start-app.bat (or run npm start), then try again. Your message is still here."
+      ? "Can't reach the CareerCompass API. Please try again when the service is available. Your message is still here."
       : `Aarav is unavailable right now: ${error.message}. Your message is still here.`;
     reply.textContent = `${message} If you need immediate support in India, call 112 or Tele-MANAS at 14416.`;
   } finally {
