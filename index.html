@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerCompass — Student Career Advisor & Learning Route Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A1220;
+    --bg-panel: #111C2E;
+    --bg-raised: #18263A;
+    --border: #2B3B53;
+    --border-soft: #223047;
+    --text: #F3F6FA;
+    --text-muted: #B8C4D3;
+    --text-faint: #8798AF;
+    --brass: #F2C36B;
+    --brass-dim: #B88A40;
+    --brass-wash: rgba(242,195,107,0.14);
+    --teal: #5EEAD4;
+    --teal-wash: rgba(94,234,212,0.13);
+    --rust: #FB8A76;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: radial-gradient(ellipse 90% 60% at 50% -10%, #1A2A42 0%, var(--bg) 58%);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  a{ color: var(--brass); }
+
+  ::selection{ background: var(--brass-wash); color: var(--text); }
+
+  :focus-visible{
+    outline: 2px solid var(--brass);
+    outline-offset: 3px;
+  }
+
+  .wrap{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  /* ---------- Top Bar ---------- */
+  .top-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 10px;
+    border-bottom: 1px solid var(--border-soft);
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .wordmark{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .wordmark span{ color: var(--brass); font-weight: 600; }
+
+  .top-actions{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .status-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--teal);
+    background: var(--teal-wash);
+    border: 1px solid rgba(95,168,163,0.3);
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  .status-dot{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 6px var(--teal);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .settings-link-btn{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .settings-link-btn:hover{
+    border-color: var(--brass);
+    color: var(--brass);
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero{
+    position: relative;
+    overflow: hidden;
+    padding: 24px 0 40px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .hero-grid{ position: relative; z-index: 1; }
+
+  .background-paths{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.58;
+    overflow: hidden;
+  }
+
+  .background-paths svg{
+    width: 100%;
+    height: 100%;
+    min-width: 696px;
+    color: var(--brass);
+    overflow: visible;
+  }
+
+  .background-paths path{
+    fill: none;
+    stroke: currentColor;
+    stroke-dasharray: 18 34;
+    animation: background-path-flow 24s linear infinite;
+  }
+
+  .background-paths .paths-left{
+    animation-duration: 29s;
+    animation-direction: reverse;
+    opacity: 0.55;
+  }
+
+  .background-paths .paths-right{ opacity: 0.7; }
+
+  @keyframes background-path-flow{
+    from{ stroke-dashoffset: 0; }
+    to{ stroke-dashoffset: -520; }
+  }
+
+  .image-stream{
+    position: absolute;
+    inset: 0 -12%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  }
+
+  .image-stream-card{
+    --stream-delay: 0s;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    width: clamp(74px, 10vw, 120px);
+    aspect-ratio: 0.72;
+    border: 1px solid var(--brass-dim);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-raised);
+    box-shadow: 0 0 22px rgba(0,0,0,0.55);
+    animation: image-stream-right 18s linear infinite var(--stream-delay);
+  }
+
+  .image-stream-card.left{ animation-name: image-stream-left; }
+
+  .image-stream-card img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: saturate(0.55) sepia(0.18) contrast(1.05);
+  }
+
+  @keyframes image-stream-right{
+    0%{ transform: translate3d(-50%, -50%, 0) rotate(-8deg) scale(0.08); opacity: 0; }
+    7%{ opacity: 0.85; }
+    100%{ transform: translate3d(31vw, -50%, 0) rotate(20deg) scale(2.35); opacity: 0; }
+  }
+
+  @keyframes image-stream-left{
+    0%{ transform: translate3d(-50%, -50%, 0) rotate(8deg) scale(0.08); opacity: 0; }
+    7%{ opacity: 0.85; }
+    100%{ transform: translate3d(-31vw, -50%, 0) rotate(-20deg) scale(2.35); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .image-stream-card{ animation-play-state: paused; }
+    .background-paths path{ animation-play-state: paused; }
+  }
+
+  .hero-grid{
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .hero h1{
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  .hero h1 em{
+    font-style: italic;
+    font-weight: 300;
+    color: var(--brass);
+  }
+
+  .hero-sub{
+    margin-top: 18px;
+    max-width: 48ch;
+    color: var(--text-muted);
+    font-size: 1.02rem;
+  }
+
+  .cta-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 26px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--text);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 3px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .cta-link:hover{ color: var(--brass); }
+
+  .hero-instrument{ display:flex; justify-content:center; }
+
+  .compass-rose{ width: 100%; max-width: 220px; height: auto; }
+
+  .compass-rose .ring{ stroke: var(--border); fill: none; }
+  .compass-rose .tick{ stroke: var(--text-faint); }
+  .compass-rose .tick-major{ stroke: var(--text-muted); }
+  .compass-rose .label{ font-family: var(--font-mono); font-size: 9px; fill: var(--text-muted); }
+  .compass-rose .needle{
+    transform-origin: 110px 110px;
+    animation: settle 1.6s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  .compass-rose .needle .north{ fill: var(--brass); }
+  .compass-rose .needle .south{ fill: var(--border); }
+
+  @keyframes settle{
+    from{ transform: rotate(-52deg); }
+    to{ transform: rotate(0deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .compass-rose .needle{ animation: none; }
+    html{ scroll-behavior: auto; }
+  }
+
+  @media (max-width: 720px){
+    .hero-grid{ grid-template-columns: 1fr; }
+    .hero-instrument{ order: -1; max-width: 160px; margin: 0 auto 8px; }
+  }
+
+  /* ---------- Panels ---------- */
+
+  .panel{
+    position: relative;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 36px;
+    margin-top: 32px;
+  }
+
+  .panel::before, .panel::after{
+    content:"";
+    position:absolute;
+    width: 14px; height: 14px;
+    border: 1px solid var(--brass-dim);
+  }
+  .panel::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .panel::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  .panel-head{ margin-bottom: 24px; }
+  .panel-head h2{
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.55rem;
+  }
+  .panel-head p{ color: var(--text-muted); margin-top: 6px; font-size: 0.94rem; }
+
+  /* ---------- Presets Bar ---------- */
+
+  .presets-bar{
+    margin-bottom: 24px;
+    padding: 14px 16px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-soft);
+    border-radius: 3px;
+  }
+
+  .preset-label{
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--brass);
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+
+  .preset-chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .preset-chip{
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .preset-chip:hover{
+    border-color: var(--brass);
+    color: var(--brass);
+    background: var(--brass-wash);
+  }
+
+  /* ---------- Form ---------- */
+
+  .field-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  .field{ display:flex; flex-direction:column; gap: 8px; }
+  .field.full{ grid-column: 1 / -1; }
+
+  .field-label{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--brass);
+    letter-spacing: 0.02em;
+  }
+
+  .field-label .opt{ color: var(--text-faint); }
+
+  input, select, textarea{
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    border-radius: 2px;
+    transition: border-color 0.15s;
+  }
+
+  input::placeholder, textarea::placeholder{ color: var(--text-faint); }
+
+  input:focus, select:focus, textarea:focus{
+    outline: none;
+    border-color: var(--brass);
+  }
+
+  textarea{ resize: vertical; min-height: 72px; font-family: var(--font-body); }
+
+  select{
+    appearance: none;
+    -webkit-appearance:none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2396938B'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position: right 14px center;
+  }
+
+  @media (max-width: 640px){ .field-grid{ grid-template-columns: 1fr; } }
+
+  .btn{
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    background: transparent;
+    color: var(--brass);
+    border: 1px solid var(--brass-dim);
+    padding: 13px 26px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:hover{ background: var(--brass); color: #16130C; border-color: var(--brass); }
+
+  .btn-primary{ margin-top: 28px; width: 100%; font-size: 0.92rem; font-weight: 500; }
+
+  .btn-ghost{
+    background: transparent; color: var(--text-muted); border: 1px solid var(--border);
+  }
+  .btn-ghost:hover{ background: var(--bg-raised); color: var(--text); border-color: var(--brass-dim); }
+
+  /* ---------- Status states ---------- */
+
+  .loading{ display:none; text-align:center; padding: 48px 0; color: var(--text-muted); }
+  .loading.show{ display:block; }
+  .loading p{ font-family: var(--font-mono); font-size: 0.88rem; margin-top: 14px; }
+  .loading-subtext{ font-size: 0.78rem; color: var(--text-faint); margin-top: 6px; }
+
+  .loading .bearing-spin{
+    width: 38px; height: 38px; margin: 0 auto;
+    border: 2px solid var(--border);
+    border-top-color: var(--brass);
+    border-radius: 50%;
+    animation: spin 0.85s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  .notice{
+    display:none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 14px 18px;
+    border-left: 3px solid;
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+  .notice.error{ border-color: var(--rust); background: rgba(193,97,74,0.12); color: #F0ADA0; }
+  .notice.success{ border-color: var(--teal); background: rgba(95,168,163,0.12); color: #B3DFDB; }
+
+  /* ---------- Results / Tabs ---------- */
+
+  .results-section{ display:none; margin-top: 36px; }
+  .results-section.show{ display:block; }
+
+  .results-toolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .tabs{
+    display:flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .tab-btn{
+    background:none; border:none; color: var(--text-muted);
+    font-family: var(--font-mono); font-size: 0.84rem;
+    padding: 12px 18px;
+    cursor:pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover{ color: var(--text); }
+  .tab-btn.active{ color: var(--brass); border-color: var(--brass); font-weight: 500; }
+
+  .quick-exports{
+    display: flex;
+    gap: 8px;
+  }
+
+  .mini-action-btn{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 6px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mini-action-btn:hover{
+    border-color: var(--brass);
+    color: var(--brass);
+  }
+
+  .tab-content{ display:none; }
+  .tab-content.active{ display:block; }
+
+  .tab-content h2{
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+  }
+
+  /* ---------- Waypoint (career) cards ---------- */
+
+  .route-list{ display:flex; flex-direction:column; gap: 0; }
+
+  .waypoint{
+    display:grid;
+    grid-template-columns: 88px 1fr;
+    gap: 26px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border-soft);
+    position: relative;
+  }
+  .waypoint:first-child{ border-top: none; }
+
+  .waypoint-mark{ display:flex; flex-direction:column; align-items:center; gap: 10px; }
+
+  .waypoint-rank{
+    font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-faint);
+  }
+
+  .bearing-ring{
+    --pct: 0;
+    width: 68px; height: 68px; border-radius: 50%;
+    background: conic-gradient(var(--brass) calc(var(--pct) * 1%), var(--border-soft) 0);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 0 12px rgba(201,160,99,0.15);
+  }
+  .bearing-ring-inner{
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--bg-panel);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-mono); font-size: 0.82rem; color: var(--text);
+    font-weight: 600;
+  }
+
+  .waypoint-title{
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.35rem;
+    color: var(--text);
+  }
+
+  .waypoint-reason{ color: var(--text-muted); margin-top: 8px; font-size: 0.95rem; line-height: 1.6; }
+
+  .waypoint-tags{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 16px; }
+
+  .tag{
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--brass); border: 1px solid var(--brass-dim);
+    padding: 4px 10px; border-radius: 2px;
+    background: var(--brass-wash);
+  }
+
+  .waypoint-stats{
+    display:grid; grid-template-columns: repeat(3, auto);
+    gap: 24px; margin-top: 22px;
+    background: var(--bg-raised);
+    padding: 14px 18px;
+    border: 1px solid var(--border-soft);
+    border-radius: 2px;
+  }
+  .waypoint-stats > div{ display:flex; flex-direction:column; gap:4px; }
+  .waypoint-stats dt{ font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-faint); text-transform: uppercase; }
+  .waypoint-stats dd{ font-size: 0.95rem; font-weight: 500; }
+
+  @media (max-width: 580px){
+    .waypoint{ grid-template-columns: 1fr; }
+    .waypoint-mark{ flex-direction:row; justify-content: space-between; }
+    .waypoint-stats{ grid-template-columns: 1fr; }
+  }
+
+  .mono-label{
+    display:block; font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--text-faint); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  .waypoint-project{ margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.02); border-left: 2px solid var(--brass); }
+  .waypoint-project p{ font-size: 0.92rem; color: var(--text); }
+
+  /* ---------- Interactive Roadmap Checklist ---------- */
+
+  .waypoint-roadmap{ margin-top: 26px; }
+  
+  .roadmap-progress-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .roadmap-progress-count{
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--brass);
+  }
+
+  .roadmap-track{
+    width: 100%;
+    height: 4px;
+    background: var(--border-soft);
+    border-radius: 2px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .roadmap-track-fill{
+    height: 100%;
+    background: var(--brass);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .roadmap-list{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .roadmap-item-row{
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    padding: 8px 10px;
+    border-radius: 3px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-soft);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .roadmap-item-row:hover{
+    background: rgba(255,255,255,0.04);
+  }
+  .roadmap-item-row.done{
+    color: var(--text-faint);
+    text-decoration: line-through;
+    opacity: 0.8;
+  }
+  .roadmap-item-row input[type="checkbox"]{
+    accent-color: var(--brass);
+    margin-top: 3px;
+    cursor: pointer;
+  }
+  .roadmap-item-text strong{
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .waypoint-actions{
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- Comparison table ---------- */
+
+  table{ width:100%; border-collapse: collapse; }
+  thead th{
+    text-align:left; font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--text-faint); font-weight: 400; text-transform: uppercase;
+    padding: 12px 14px; border-bottom: 1px solid var(--border);
+  }
+  tbody td{ padding: 16px 14px; border-bottom: 1px solid var(--border-soft); font-size: 0.92rem; }
+  tbody tr:hover{ background: var(--bg-raised); }
+  tbody td strong{ font-weight: 500; color: var(--text); }
+
+  .table-scroll{ overflow-x:auto; }
+
+  /* ---------- Saved / logbook ---------- */
+
+  .logbook-list{ display:flex; flex-direction:column; gap: 14px; }
+
+  .logbook-item{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 16px;
+    border-left: 3px solid var(--brass);
+    background: var(--bg-raised);
+    padding: 16px 20px;
+  }
+  .logbook-item h3{ font-family: var(--font-display); font-weight: 500; font-size: 1.08rem; }
+  .logbook-meta{ font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-faint); margin-top: 4px; }
+
+  .remove-btn{
+    background:none; border:1px solid var(--border); color: var(--text-muted);
+    font-family: var(--font-mono); font-size: 0.74rem;
+    padding: 7px 14px; cursor:pointer; border-radius: 2px; flex-shrink:0;
+    transition: all 0.15s;
+  }
+  .remove-btn:hover{ border-color: var(--rust); color: #E3A395; background: rgba(193,97,74,0.1); }
+
+  .empty-state{ text-align:center; color: var(--text-faint); padding: 40px 0; font-size: 0.95rem; font-family: var(--font-mono); }
+
+  /* ---------- Skill gap ---------- */
+
+  .skill-gap{ padding: 24px 0; border-top: 1px solid var(--border-soft); }
+  .skill-gap:first-child{ border-top: none; }
+
+  .skill-gap-title{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family: var(--font-display); font-size: 1.15rem; font-weight: 500;
+  }
+  .skill-gap-count{ font-family: var(--font-mono); font-size: 0.82rem; color: var(--brass); }
+
+  .horizon{
+    width:100%; height: 4px; background: var(--border-soft); margin-top: 14px; position:relative; border-radius: 2px;
+  }
+  .horizon-fill{ position:absolute; left:0; top:0; height:100%; background: var(--brass); border-radius: 2px; }
+
+  .skill-pill-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .skill-pill{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 4px 10px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .skill-pill.have{
+    background: var(--teal-wash);
+    color: var(--teal);
+    border: 1px solid rgba(95,168,163,0.3);
+  }
+  .skill-pill.learn{
+    background: var(--brass-wash);
+    color: var(--brass);
+    border: 1px solid rgba(201,160,99,0.3);
+  }
+
+  .skill-gap-detail{ font-size: 0.88rem; color: var(--text-muted); margin-top: 14px; }
+  .skill-gap-detail strong{ color: var(--text); font-weight: 500; }
+
+  /* ---------- Settings Modal ---------- */
+
+  .modal-overlay{
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(11, 11, 13, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open{ display: flex; }
+
+  .modal-box{
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    max-width: 500px;
+    width: 100%;
+    padding: 28px;
+    position: relative;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  }
+
+  .modal-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .modal-head h3{
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+  .close-modal-btn{
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .close-modal-btn:hover{ color: var(--text); }
+
+  /* ---------- Footer ---------- */
+
+  .site-footer{
+    margin: 56px 0 30px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+    display:flex; justify-content:space-between; align-items:center;
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-faint);
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  /* ---------- Print Styles ---------- */
+  @media print {
+    body { background: #fff !important; color: #000 !important; }
+    .panel, .top-bar, .hero-instrument, .presets-bar, .tabs, .quick-exports, .btn, .site-footer { display: none !important; }
+    .results-section, .tab-content { display: block !important; }
+    .waypoint { page-break-inside: avoid; border-top: 1px solid #ccc !important; }
+    .bearing-ring { border: 1px solid #999; }
+    .tag { border: 1px solid #666; color: #000; }
+  }
+</style>
+<link rel="stylesheet" href="/features.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="top-bar">
+    <div class="wordmark">CAREER<span>COMPASS</span> &bull; Student Career Advisor &amp; Route Planner</div>
+    <div class="top-actions">
+      <div id="firebaseAuthSection" class="firebase-auth-section"></div>
+      <button type="button" class="settings-link-btn exit-quick-btn" onclick="exitQuickly()" aria-label="Leave this page and open a neutral page">✕ Exit Quickly</button>
+      <div class="status-badge" id="systemStatusBadge" title="Server connectivity status">
+        <span class="status-dot"></span>
+        <span id="systemStatusText">Server Online</span>
+      </div>
+      <button type="button" class="settings-link-btn theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark mode</button>
+      <button type="button" class="settings-link-btn" onclick="openSettingsModal()">⚙ Settings</button>
+    </div>
+  </div>
+
+  <nav class="app-page-nav" aria-label="Main sections" role="tablist">
+    <button type="button" class="app-page-btn active" role="tab" aria-selected="true" data-page="career" onclick="switchAppPage('career', this)">🧭 Career Advisor</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="exams" onclick="switchAppPage('exams', this)">📚 Exams &amp; Roadmaps</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="support" onclick="switchAppPage('support', this)">🧡 Student Support</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="quiz" onclick="switchAppPage('quiz', this)">✨ Interest Quiz</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="explorer" onclick="switchAppPage('explorer', this)">🔎 Career Explorer</button>
+  </nav>
+
+  <header class="hero" data-app-page="career">
+    <div class="background-paths" aria-hidden="true">
+      <svg viewBox="0 0 696 316" preserveAspectRatio="xMidYMid slice" role="presentation">
+        <g class="paths-left" stroke-width="0.65">
+          <path d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875"/>
+          <path d="M-385 -195C-385 -195 -317 210 147 337C611 464 679 869 679 869"/>
+          <path d="M-390 -201C-390 -201 -322 204 142 331C606 458 674 863 674 863"/>
+          <path d="M-395 -207C-395 -207 -327 198 137 325C601 452 669 857 669 857"/>
+          <path d="M-400 -213C-400 -213 -332 192 132 319C596 446 664 851 664 851"/>
+          <path d="M-405 -219C-405 -219 -337 186 127 313C591 440 659 845 659 845"/>
+          <path d="M-410 -225C-410 -225 -342 180 122 307C586 434 654 839 654 839"/>
+          <path d="M-415 -231C-415 -231 -347 174 117 301C581 428 649 833 649 833"/>
+          <path d="M-420 -237C-420 -237 -352 168 112 295C576 422 644 827 644 827"/>
+        </g>
+        <g class="paths-right" stroke-width="0.65" transform="scale(-1 1) translate(-696 0)">
+          <path d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875"/>
+          <path d="M-385 -195C-385 -195 -317 210 147 337C611 464 679 869 679 869"/>
+          <path d="M-390 -201C-390 -201 -322 204 142 331C606 458 674 863 674 863"/>
+          <path d="M-395 -207C-395 -207 -327 198 137 325C601 452 669 857 669 857"/>
+          <path d="M-400 -213C-400 -213 -332 192 132 319C596 446 664 851 664 851"/>
+          <path d="M-405 -219C-405 -219 -337 186 127 313C591 440 659 845 659 845"/>
+          <path d="M-410 -225C-410 -225 -342 180 122 307C586 434 654 839 654 839"/>
+          <path d="M-415 -231C-415 -231 -347 174 117 301C581 428 649 833 649 833"/>
+          <path d="M-420 -237C-420 -237 -352 168 112 295C576 422 644 827 644 827"/>
+        </g>
+      </svg>
+    </div>
+    <div class="image-stream" aria-hidden="true">
+      <div class="image-stream-card" style="--stream-delay: -1s"><img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -7s"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -13s"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -4s"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -3s"><img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -9s"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -15s"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -6s"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Find true north<br><em>for your career.</em></h1>
+        <p class="hero-sub">Give us your academic background and interests. We'll chart five realistic career routes, calculate your skill match percentage, and generate a customized 12-week learning roadmap.</p>
+        <a href="#plan-form" class="cta-link">Start plotting your route &darr;</a>
+      </div>
+      <div class="hero-instrument">
+        <svg class="compass-rose" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="Nautical Compass">
+          <circle class="ring" cx="110" cy="110" r="98"/>
+          <circle class="ring" cx="110" cy="110" r="70"/>
+          <g class="ticks">
+            <g stroke="currentColor">
+              <line class="tick-major" x1="110" y1="8" x2="110" y2="22"/>
+              <line class="tick-major" x1="110" y1="198" x2="110" y2="212"/>
+              <line class="tick-major" x1="8" y1="110" x2="22" y2="110"/>
+              <line class="tick-major" x1="198" y1="110" x2="212" y2="110"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(30 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(60 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(120 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(150 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(210 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(240 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(300 110 110)"/>
+              <line class="tick" x1="110" y1="12" x2="110" y2="20" transform="rotate(330 110 110)"/>
+            </g>
+          </g>
+          <text class="label" x="106" y="34" text-anchor="middle">N</text>
+          <text class="label" x="106" y="193" text-anchor="middle">S</text>
+          <text class="label" x="184" y="114" text-anchor="middle">E</text>
+          <text class="label" x="28" y="114" text-anchor="middle">W</text>
+          <g class="needle">
+            <polygon class="north" points="110,42 118,110 110,124 102,110"/>
+            <polygon class="south" points="110,178 118,110 110,96 102,110"/>
+          </g>
+          <circle cx="110" cy="110" r="5" fill="var(--bg-panel)" stroke="var(--brass-dim)"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="real-world-gallery" data-app-page="career" aria-label="Career paths in real-world settings">
+    <figure class="real-world-photo">
+      <img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1000" alt="Colleagues sharing ideas around a laptop at work" loading="lazy" decoding="async">
+      <figcaption><span class="mono-label">WORK TOGETHER</span><strong>Ideas grow through collaboration.</strong></figcaption>
+    </figure>
+    <figure class="real-world-photo">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="Students learning together around a laptop" loading="lazy" decoding="async">
+      <figcaption><span class="mono-label">LEARN BY DOING</span><strong>Build skills with real projects.</strong></figcaption>
+    </figure>
+    <figure class="real-world-photo">
+      <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="Teacher guiding students in a classroom" loading="lazy" decoding="async">
+      <figcaption><span class="mono-label">FIND YOUR DIRECTION</span><strong>Turn guidance into next steps.</strong></figcaption>
+    </figure>
+  </section>
+
+  <section class="panel" id="plan-form" data-app-page="career">
+    <div class="panel-head">
+      <h2>Student Coordinates</h2>
+      <p>Fill out your profile or select a student preset to test immediately.</p>
+    </div>
+
+    <!-- Quick Presets for Students -->
+    <div class="presets-bar">
+      <span class="preset-label">&bull; QUICK STUDENT PRESETS (1-CLICK FILL):</span>
+      <div class="preset-chips">
+        <button type="button" class="preset-chip" onclick="applyPreset('cs_ai')">💻 CS &amp; Artificial Intelligence</button>
+        <button type="button" class="preset-chip" onclick="applyPreset('data')">📊 Data Science &amp; Analytics</button>
+        <button type="button" class="preset-chip" onclick="applyPreset('design')">🎨 UI/UX &amp; Product Design</button>
+        <button type="button" class="preset-chip" onclick="applyPreset('fintech')">📈 Commerce &amp; FinTech</button>
+        <button type="button" class="preset-chip" onclick="applyPreset('iot')">⚡ Robotics &amp; IoT</button>
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div class="field">
+        <label class="field-label" for="degree">Degree / Academic Branch</label>
+        <input type="text" id="degree" placeholder="e.g., B.Tech Computer Science, B.Com, B.Sc" required>
+      </div>
+      <div class="field">
+        <label class="field-label" for="interests">Interests &amp; Passions</label>
+        <input type="text" id="interests" placeholder="e.g., coding, machine learning, web design, finance" required>
+      </div>
+      <div class="field">
+        <label class="field-label" for="skills">Current Skills &amp; Tools</label>
+        <input type="text" id="skills" placeholder="e.g., Python, SQL, Git, Excel, Figma" required>
+      </div>
+      <div class="field">
+        <label class="field-label" for="work-style">Preferred Work Style</label>
+        <select id="work-style" required>
+          <option value="">Select work style...</option>
+          <option value="Analytical & Detail-oriented">Analytical &amp; Detail-oriented</option>
+          <option value="Creative & Independent">Creative &amp; Independent</option>
+          <option value="Team-based & Collaborative">Team-based &amp; Collaborative</option>
+          <option value="Remote & Flexible">Remote &amp; Flexible</option>
+          <option value="Leadership & Management">Leadership &amp; Management</option>
+          <option value="Mix of everything">Mix of everything</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label class="field-label" for="goals">Career Goals &amp; Aspirations <span class="opt">&mdash; optional</span></label>
+        <textarea id="goals" placeholder="e.g., Build scalable AI software, lead design teams, transition into product management"></textarea>
+      </div>
+    </div>
+
+    <button type="button" id="chartBtn" class="btn btn-primary" onclick="generateCareers()">
+      🧭 Chart My Career Routes
+    </button>
+  </section>
+
+  <div id="loading" class="loading" data-app-page="career">
+    <div class="bearing-spin"></div>
+    <p>Plotting your career routes with AI advisor...</p>
+    <div class="loading-subtext">Evaluating job demand, preparing match scores &amp; mapping 12-week roadmap</div>
+  </div>
+
+  <div id="error" class="notice error" data-app-page="career"></div>
+  <div id="success" class="notice success" data-app-page="career"></div>
+
+  <section id="results" class="results-section" data-app-page="career">
+    <div class="results-toolbar">
+      <div class="tabs" role="tablist">
+        <button class="tab-btn active" data-tab="careers" onclick="switchTab('careers', this)">Recommended Routes</button>
+        <button class="tab-btn" data-tab="comparison" onclick="switchTab('comparison', this)">Compare Matrix</button>
+        <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis', this)">Skill Gap Analysis</button>
+        <button class="tab-btn" data-tab="saved" onclick="switchTab('saved', this)">Saved Logbook (<span id="savedCount">0</span>)</button>
+      </div>
+      <div class="quick-exports">
+        <button type="button" class="mini-action-btn" onclick="copyFullPlan()" title="Copy route breakdown to clipboard">📋 Copy Plan</button>
+        <button type="button" class="mini-action-btn" onclick="window.print()" title="Print or save as PDF">🖨️ Print / PDF</button>
+        <button type="button" class="mini-action-btn" onclick="downloadRoadmap()" title="Download plain text roadmap">💾 Download .txt</button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Recommended Routes -->
+    <div id="careers-tab" class="tab-content active">
+      <h2>Recommended Career Routes</h2>
+      <section class="chart-panel" aria-labelledby="radar-title">
+        <div class="feature-heading"><div><span class="mono-label">PROFILE OVERVIEW</span><h3 id="radar-title">Skill Fit Radar Chart</h3></div><span class="feature-caption">Relative route fit</span></div>
+        <div id="skillRadarChart" class="chart-canvas" aria-live="polite"></div>
+      </section>
+      <div id="careersContainer" class="route-list"></div>
+      <section class="chart-panel journey-flow-panel" aria-labelledby="journey-flow-title">
+        <div class="feature-heading"><div><span class="mono-label">YOUR WAY FORWARD</span><h3 id="journey-flow-title">Career Journey Flow</h3></div><span class="feature-caption">One milestone at a time</span></div>
+        <div id="careerJourneyFlow" class="career-journey-flow"></div>
+      </section>
+    </div>
+
+    <!-- Tab 2: Comparison -->
+    <div id="comparison-tab" class="tab-content">
+      <h2>Career Route Comparison</h2>
+      <section class="chart-panel" aria-labelledby="comparison-chart-title">
+        <div class="feature-heading"><div><span class="mono-label">ROUTE METRICS</span><h3 id="comparison-chart-title">Grouped Route Comparison</h3></div><span class="feature-caption">Match score and skill fit</span></div>
+        <div id="comparisonChart" class="chart-canvas" aria-live="polite"></div>
+      </section>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Career Route</th>
+              <th>Match Score</th>
+              <th>Prep Time</th>
+              <th>Demand</th>
+              <th>Expected Starting Salary</th>
+              <th>Core Skills</th>
+            </tr>
+          </thead>
+          <tbody id="comparisonBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Skill Gap Analysis -->
+    <div id="analysis-tab" class="tab-content">
+      <h2>Skill Gap Analysis</h2>
+      <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:20px;">
+        Comparing your current skill set against the requirements for each route to highlight your strengths and growth areas.
+      </p>
+      <div id="skillGapContainer"></div>
+    </div>
+
+    <!-- Tab 4: Logbook -->
+    <div id="saved-tab" class="tab-content">
+      <h2>Your Saved Career Logbook</h2>
+      <div id="savedCareersContainer" class="logbook-list"></div>
+      <p id="noSaved" class="empty-state">No routes saved yet. Click "Save this route" on any career card to add it here.</p>
+    </div>
+
+    <button class="btn btn-ghost" style="margin-top:36px; width:100%;" onclick="downloadRoadmap()">
+      💾 Download Full Personalized Route Log (.txt)
+    </button>
+  </section>
+
+  <main id="exams-page" class="app-section-page" data-app-page="exams" hidden>
+    <section class="feature-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">EXAMS &amp; ROADMAPS</span>
+        <h1>Choose your next <em>milestone.</em></h1>
+        <p>Explore entrance and career exams, compare their patterns, and build a practical 12-month study checklist. Exam details can change—always verify dates and rules on the official exam website.</p>
+      </div>
+      <figure class="real-world-photo feature-hero-photo">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Students learning together in a classroom" loading="lazy" decoding="async">
+        <figcaption><span class="mono-label">PREPARE WITH PURPOSE</span><strong>Every big goal starts with a study session.</strong></figcaption>
+      </figure>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Find an exam</h2><p>Filter the guide by field and preparation level.</p></div>
+      <div class="exam-filters">
+        <label class="field"><span class="field-label" for="examCategoryFilter">CATEGORY</span><select id="examCategoryFilter" onchange="renderExamCards()"><option value="all">All categories</option></select></label>
+        <label class="field"><span class="field-label" for="examDifficultyFilter">DIFFICULTY</span><select id="examDifficultyFilter" onchange="renderExamCards()"><option value="all">All levels</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
+      </div>
+      <div id="examCards" class="exam-grid"></div>
+      <div id="examDetail" class="exam-detail" aria-live="polite"><p class="empty-state">Select an exam card to explore its pattern and preparation timeline.</p></div>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Which exam suits me?</h2><p>Share your interests and strengths for a personalized starting point. The AI suggestion is guidance, not an official eligibility decision.</p></div>
+      <div class="field-grid">
+        <label class="field"><span class="field-label" for="examInterests">INTERESTS</span><input id="examInterests" type="text" placeholder="e.g. engineering, public service, design"></label>
+        <label class="field"><span class="field-label" for="examStrengths">SUBJECT STRENGTHS</span><input id="examStrengths" type="text" placeholder="e.g. maths, biology, writing"></label>
+      </div>
+      <button type="button" class="btn btn-primary feature-button" onclick="recommendExams()">✨ Recommend exams</button>
+      <div id="examRecommendation" class="feature-message" aria-live="polite"></div>
+    </section>
+    <section class="panel study-planner-panel">
+      <div class="panel-head"><span class="mono-label">YOUR NEXT STEPS</span><h2>Build a study roadmap</h2><p>Pick an exam and a pace. Your roadmap and check-ins stay saved in this browser.</p></div>
+      <div class="study-plan-controls">
+        <label class="field"><span class="field-label" for="studyPlanExam">EXAM</span><select id="studyPlanExam"></select></label>
+        <label class="field"><span class="field-label" for="studyDuration">PREPARATION WINDOW</span><select id="studyDuration"><option value="3">3 months</option><option value="6">6 months</option><option value="9">9 months</option><option value="12" selected>12 months</option></select></label>
+        <label class="field daily-hours-field"><span class="field-label" for="dailyStudyHours">DAILY STUDY HOURS</span><input id="dailyStudyHours" type="number" min="1" max="16" step="1" value="3"></label>
+        <button type="button" class="btn" onclick="generateStudyPlan()">Generate study plan</button>
+      </div>
+      <p class="study-hours-note">Weekly study targets assume six study days and one rest day.</p>
+      <div id="studyPlan" class="study-plan-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <main id="support-page" class="app-section-page" data-app-page="support" hidden>
+    <section class="feature-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">STUDENT SUPPORT</span>
+        <h1>A softer place to <em>pause.</em></h1>
+        <p>Take a moment, check in with yourself, or find a real person to talk to. You can use the tools here without signing in.</p>
+      </div>
+      <figure class="real-world-photo feature-hero-photo">
+        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="A group spending time together outdoors" loading="lazy" decoding="async">
+        <figcaption><span class="mono-label">YOU DON'T HAVE TO DO IT ALONE</span><strong>Support starts with connection.</strong></figcaption>
+      </figure>
+    </section>
+    <section class="panel helpline-panel">
+      <div class="panel-head"><h2>Real people, here to help</h2><p>If you feel unsafe or need immediate help, contact emergency services or a trusted person now.</p></div>
+      <div class="helpline-grid">
+        <a class="helpline-card emergency-card" href="tel:112"><span class="mono-label">EMERGENCY • INDIA</span><strong>112</strong><span>Call for immediate emergency assistance</span><span class="helpline-action">Call 112 ↗</span></a>
+        <a class="helpline-card" href="tel:14416"><span class="mono-label">TELE-MANAS • INDIA</span><strong>14416</strong><span>National tele-mental health support</span><span class="helpline-action">Call 14416 ↗</span></a>
+      </div>
+      <p class="support-note">Helplines shown are for India. If you are elsewhere, contact your local emergency number or crisis service.</p>
+    </section>
+    <div class="support-grid">
+      <section class="panel">
+        <div class="panel-head"><h2>Mood check-in</h2><p>How are you feeling right now? Your check-ins stay in this browser.</p></div>
+        <div class="mood-scale" role="group" aria-label="Choose your mood">
+          <button type="button" class="mood-choice" data-mood="1" aria-label="Very low" aria-pressed="false" onclick="recordMood(1)">😞<span>Low</span></button>
+          <button type="button" class="mood-choice" data-mood="2" aria-label="A little low" aria-pressed="false" onclick="recordMood(2)">😕<span>Uneasy</span></button>
+          <button type="button" class="mood-choice" data-mood="3" aria-label="Okay" aria-pressed="false" onclick="recordMood(3)">😐<span>Okay</span></button>
+          <button type="button" class="mood-choice" data-mood="4" aria-label="Good" aria-pressed="false" onclick="recordMood(4)">🙂<span>Good</span></button>
+          <button type="button" class="mood-choice" data-mood="5" aria-label="Great" aria-pressed="false" onclick="recordMood(5)">😄<span>Great</span></button>
+        </div>
+        <p id="moodThanks" class="feature-caption mood-feedback" aria-live="polite"></p>
+        <div id="moodChart" class="mood-chart" aria-label="Recent mood check-ins"></div>
+        <button type="button" class="mini-action-btn" onclick="clearMoodHistory()">Clear my check-ins</button>
+      </section>
+      <section class="panel breathing-panel">
+        <div class="panel-head"><h2>60-second breathing pause</h2><p>Follow a gentle inhale, hold, and exhale rhythm. Stop whenever you like.</p></div>
+        <div id="breathingLotus" class="breathing-lotus" data-phase="ready" role="timer" aria-live="polite">
+          <div class="lotus-ring lotus-ring-one"></div><div class="lotus-ring lotus-ring-two"></div><div class="lotus-ring lotus-ring-three"></div>
+          <div class="lotus-center"><span id="breathingCue">Ready</span><strong id="breathingTimer">60</strong></div>
+        </div>
+        <div class="breathing-actions"><button type="button" class="btn" id="breathingStart" onclick="startBreathing()">Begin</button><button type="button" class="btn btn-ghost" id="breathingStop" onclick="stopBreathing()" disabled>Stop</button></div>
+        <p class="support-note">This is a relaxation exercise, not medical treatment. Return to your normal breathing if you feel uncomfortable.</p>
+      </section>
+    </div>
+    <section class="panel listener-panel">
+      <div class="panel-head"><h2>Talk with Aarav</h2><p>A gentle AI listener for reflection and everyday support—not a therapist or emergency service. Messages are sent to the configured AI service and are not saved by this page.</p></div>
+      <div class="support-prompts" aria-label="Conversation starters">
+        <button type="button" class="support-prompt" data-prompt="I feel overwhelmed and could use a moment to sort things out." onclick="useAaravPrompt(this.dataset.prompt)">I feel overwhelmed</button>
+        <button type="button" class="support-prompt" data-prompt="Can you help me break a task into a small first step?" onclick="useAaravPrompt(this.dataset.prompt)">Help me find a first step</button>
+        <button type="button" class="support-prompt" data-prompt="I want to reflect on something that went well today." onclick="useAaravPrompt(this.dataset.prompt)">Something went well today</button>
+      </div>
+      <label class="field"><span class="field-label" for="aaravMessage">WHAT'S ON YOUR MIND?</span><textarea id="aaravMessage" rows="3" maxlength="1200" placeholder="Share only what feels comfortable. Please don't include identifying details."></textarea></label>
+      <button type="button" class="btn" id="aaravSend" onclick="talkToAarav()">Send to Aarav</button>
+      <div id="aaravReply" class="listener-reply" aria-live="polite"></div>
+      <p class="support-note">If you may hurt yourself or someone else, call 112 or Tele-MANAS at 14416 in India, or reach local emergency support now.</p>
+    </section>
+    <section class="panel peer-panel">
+      <div class="panel-head"><h2>Peer Circle</h2><p>A small, anonymous reflection wall. This demo feed is stored only in your browser and is not visible to other people.</p></div>
+      <label class="field"><span class="field-label" for="peerPost">SHARE A KIND NOTE OR QUESTION (280 CHARACTERS)</span><textarea id="peerPost" rows="2" maxlength="280" placeholder="No names or personal details, please."></textarea></label>
+      <div class="peer-compose-meta"><p id="peerStatus" class="feature-caption" aria-live="polite"></p><p id="peerCount" class="feature-caption peer-count">0 / 280</p></div>
+      <button type="button" class="btn" onclick="postPeerNote()">Add to my local feed</button>
+      <div id="peerFeed" class="peer-feed"></div>
+    </section>
+  </main>
+
+  <main id="quiz-page" class="app-section-page career-tools-page" data-app-page="quiz" hidden>
+    <section class="feature-hero career-tools-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">15 QUESTIONS · NO WRONG ANSWERS</span>
+        <h1>Find what <em>fits you.</em></h1>
+        <p>A quick, low-pressure way to explore what you enjoy and where you might want to grow. Your answers stay in this browser.</p>
+      </div>
+      <div class="career-hero-collage quiz-hero-collage" aria-label="Students exploring ideas and learning together">
+        <figure class="career-photo-main">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Students sharing ideas while studying together" loading="lazy" decoding="async">
+          <figcaption>Find what makes you curious</figcaption>
+        </figure>
+        <figure class="career-photo-float">
+          <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="A teacher guiding students through a lesson" loading="lazy" decoding="async">
+        </figure>
+        <span class="career-photo-sticker"><strong>15</strong> small questions<br>big possibilities ✨</span>
+      </div>
+    </section>
+    <section class="panel quiz-panel" aria-labelledby="quiz-title">
+      <div class="quiz-topline"><div><span class="mono-label">CAREER INTEREST QUIZ</span><h2 id="quiz-title">A little about how you think</h2></div><span id="quizStepLabel" class="quiz-step-label">Question 1 of 15</span></div>
+      <div class="quiz-progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0"><span id="quizProgressFill"></span></div>
+      <div id="quizQuestion" class="quiz-question" aria-live="polite"></div>
+      <div class="quiz-actions"><button type="button" id="quizBack" class="btn btn-ghost" onclick="moveQuiz(-1)" disabled>← Back</button><button type="button" id="quizNext" class="btn" onclick="moveQuiz(1)">Next →</button></div>
+      <div id="quizResults" class="quiz-results" aria-live="polite"></div>
+      <div id="savedQuizResult" class="saved-quiz-result"></div>
+    </section>
+    <p class="career-data-note">This quiz is for exploration, not a formal assessment or admission recommendation.</p>
+  </main>
+
+  <main id="explorer-page" class="app-section-page career-tools-page" data-app-page="explorer" hidden>
+    <section class="feature-hero career-tools-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">CAREER EXPLORER · INDIA</span>
+        <h1>Curiosity is a <em>good start.</em></h1>
+        <p>Browse real career paths, see what the work involves, compare options, and save the ones you want to revisit.</p>
+      </div>
+      <div class="career-hero-collage explorer-hero-collage" aria-label="A glimpse of different ways people work and learn">
+        <figure class="career-photo-main">
+          <img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="Professionals collaborating around a laptop" loading="lazy" decoding="async">
+          <figcaption>Many paths. Your kind of work.</figcaption>
+        </figure>
+        <figure class="career-photo-float">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="A person working on a laptop and exploring ideas" loading="lazy" decoding="async">
+        </figure>
+        <span class="career-photo-sticker"><strong>27</strong> paths to explore<br>one step at a time 🧭</span>
+      </div>
+    </section>
+    <section class="panel explorer-panel">
+      <div class="panel-head"><h2>Explore careers</h2><p>Search by role or filter by interest area and school stream.</p></div>
+      <div class="explorer-filters">
+        <label class="field"><span class="field-label" for="careerSearch">SEARCH</span><input id="careerSearch" type="search" placeholder="Try product designer, doctor, finance…" oninput="renderCareerExplorer()"></label>
+        <label class="field"><span class="field-label" for="careerFieldFilter">FIELD</span><select id="careerFieldFilter" onchange="renderCareerExplorer()"><option value="all">All fields</option></select></label>
+        <label class="field"><span class="field-label" for="careerStreamFilter">STREAM</span><select id="careerStreamFilter" onchange="renderCareerExplorer()"><option value="all">All streams</option><option>Science</option><option>Commerce</option><option>Arts</option><option>Any</option></select></label>
+      </div>
+      <p id="careerExplorerStatus" class="feature-caption" aria-live="polite">Loading career paths…</p>
+      <div id="careerGrid" class="career-grid"></div>
+    </section>
+    <section class="panel career-compare-panel">
+      <div class="panel-head"><span class="mono-label">SIDE-BY-SIDE</span><h2>Compare two careers</h2><p>Compare typical study length, preparation difficulty, demand, and approximate pay.</p></div>
+      <div class="career-compare-controls">
+        <label class="field"><span class="field-label" for="compareCareerOne">CAREER ONE</span><select id="compareCareerOne"></select></label>
+        <label class="field"><span class="field-label" for="compareCareerTwo">CAREER TWO</span><select id="compareCareerTwo"></select></label>
+      </div>
+      <div id="careerComparison" class="career-comparison"></div>
+    </section>
+    <section class="panel saved-careers-panel">
+      <div class="panel-head"><span class="mono-label">YOUR SHORTLIST</span><h2>Saved careers <span id="savedCareerCount" class="saved-count">0</span></h2><p>Saved on this device only.</p></div>
+      <div id="savedCareerList" class="saved-career-list"></div>
+    </section>
+    <p class="career-data-note">Salary and details are approximate. Verify with official sources.</p>
+  </main>
+
+  <div id="careerModal" class="career-modal" role="dialog" aria-modal="true" aria-labelledby="careerModalTitle" hidden onclick="if(event.target===this) closeCareerModal()">
+    <div class="career-modal-dialog">
+      <div class="career-modal-toolbar"><span class="mono-label">CAREER FIELD GUIDE</span><button type="button" id="careerModalClose" class="career-modal-close" aria-label="Close career details" onclick="closeCareerModal()">×</button></div>
+      <div id="careerModalContent"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <span>CareerCompass &bull; Built with Gemini AI</span>
+    <span>Empowering students with structured guidance, actionable roadmaps, and realistic career insights.</span>
+  </footer>
+
+</div>
+
+<!-- Settings & API Modal -->
+<div id="settingsModal" class="modal-overlay" onclick="if(event.target===this) closeSettingsModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>API &amp; System Settings</h3>
+      <button class="close-modal-btn" onclick="closeSettingsModal()">&times;</button>
+    </div>
+    <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">
+      CareerCompass connects automatically to the local Node.js backend or Vercel serverless function. You can also supply a personal Gemini API key if running without a server.
+    </p>
+    <div class="field" style="margin-bottom:16px;">
+      <label class="field-label" for="customApiKey">Custom Gemini API Key <span class="opt">(Optional Override)</span></label>
+      <input type="password" id="customApiKey" placeholder="AIzaSy... (leave empty to use server default)">
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+      <button type="button" class="btn btn-ghost" onclick="testConnection()">Test Connection</button>
+      <button type="button" class="btn" onclick="saveSettings()">Save &amp; Close</button>
+    </div>
+    <div id="settingsNotice" class="notice" style="margin-top:14px; font-size:0.8rem;"></div>
+  </div>
+</div>
+
+<!-- Firebase Setup Modal -->
+<div id="firebaseConfigModal" class="modal-overlay" onclick="if(event.target===this) window.CareerCompassFirebase?.closeConfig()">
+  <div class="modal-box" style="max-width: 580px;">
+    <div class="modal-head">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1.4rem;">🔥</span>
+        <h3>Connect Firebase</h3>
+      </div>
+      <button class="close-modal-btn" onclick="window.CareerCompassFirebase?.closeConfig()">&times;</button>
+    </div>
+    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:14px; line-height:1.5;">
+      Connect your Firebase project to enable <strong>Google Sign-In</strong> and automatically back up your saved careers, roadmaps, quiz results, and study checklists to <strong>Firestore</strong>.
+    </p>
+
+    <div class="firebase-modal-tabs">
+      <button type="button" class="firebase-tab-btn active" id="fbTabPasteBtn" onclick="switchFirebaseTab('paste')">Quick Paste Snippet</button>
+      <button type="button" class="firebase-tab-btn" id="fbTabManualBtn" onclick="switchFirebaseTab('manual')">Individual Fields</button>
+    </div>
+
+    <!-- Tab 1: Paste Snippet -->
+    <div id="fbTabPaste">
+      <div class="field" style="margin-bottom:14px;">
+        <label class="field-label" for="fbSnippetInput">Paste Firebase Config Object or Code Snippet</label>
+        <textarea id="fbSnippetInput" rows="7" style="font-family:var(--font-mono); font-size:0.75rem; width:100%; border-radius:4px; padding:10px; background:var(--bg); border:1px solid var(--border); color:var(--text); resize:vertical;" placeholder='const firebaseConfig = {
+  apiKey: "AIzaSy...",
+  authDomain: "my-project.firebaseapp.com",
+  projectId: "my-project",
+  storageBucket: "my-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456:web:abcd..."
+};'></textarea>
+      </div>
+      <button type="button" class="btn" style="width:100%; margin-bottom:10px;" onclick="parseAndSaveFirebaseSnippet()">⚡ Auto-Detect &amp; Connect</button>
+    </div>
+
+    <!-- Tab 2: Manual Fields -->
+    <div id="fbTabManual" style="display:none;">
+      <div class="fb-grid">
+        <div class="field">
+          <label class="field-label" for="fbApiKey">API Key</label>
+          <input type="text" id="fbApiKey" placeholder="AIzaSy...">
+        </div>
+        <div class="field">
+          <label class="field-label" for="fbAuthDomain">Auth Domain</label>
+          <input type="text" id="fbAuthDomain" placeholder="project.firebaseapp.com">
+        </div>
+        <div class="field">
+          <label class="field-label" for="fbProjectId">Project ID</label>
+          <input type="text" id="fbProjectId" placeholder="my-career-app">
+        </div>
+        <div class="field">
+          <label class="field-label" for="fbStorageBucket">Storage Bucket</label>
+          <input type="text" id="fbStorageBucket" placeholder="project.appspot.com">
+        </div>
+        <div class="field">
+          <label class="field-label" for="fbMessagingSenderId">Messaging Sender ID</label>
+          <input type="text" id="fbMessagingSenderId" placeholder="1234567890">
+        </div>
+        <div class="field">
+          <label class="field-label" for="fbAppId">App ID</label>
+          <input type="text" id="fbAppId" placeholder="1:123456:web:abcdef">
+        </div>
+      </div>
+      <button type="button" class="btn" style="width:100%; margin-bottom:10px;" onclick="saveManualFirebaseFields()">Save &amp; Connect</button>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--border-soft); padding-top:12px;">
+      <button type="button" class="btn btn-ghost" style="color:var(--rust); font-size:0.75rem;" onclick="window.CareerCompassFirebase?.clearConfig()">Disconnect / Clear</button>
+      <button type="button" class="mini-action-btn" onclick="window.CareerCompassFirebase?.closeConfig()">Close</button>
+    </div>
+
+    <div style="margin-top:12px; font-size:0.73rem; color:var(--text-faint); line-height:1.4;">
+      💡 <em>Tip: In your Firebase Console, ensure <strong>Google</strong> is enabled under <strong>Authentication &rarr; Sign-in method</strong>, and <strong>Firestore Database</strong> is created in test/production mode.</em>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentCareers = [];
+  let currentProfile = {};
+
+  // Presets Data
+  const PRESETS = {
+    cs_ai: {
+      degree: "B.Tech Computer Science & Engineering",
+      interests: "Coding, Generative AI, Machine Learning, Open-source",
+      skills: "Python, JavaScript, Data Structures, Git, Basic PyTorch",
+      workStyle: "Analytical & Detail-oriented",
+      goals: "Build intelligent systems and AI products at an innovative tech startup"
+    },
+    data: {
+      degree: "B.Sc / B.S. Data Science & Statistics",
+      interests: "Data modeling, statistical analysis, business metrics, automation",
+      skills: "Python, SQL, Pandas, Tableau, Statistics, Excel",
+      workStyle: "Analytical & Detail-oriented",
+      goals: "Solve large-scale business challenges as a Lead Data Analyst or ML Engineer"
+    },
+    design: {
+      degree: "B.Des / Multimedia & Visual Communication",
+      interests: "User psychology, interface prototyping, design systems, design thinking",
+      skills: "Figma, User Research, Wireframing, CSS, Usability Testing",
+      workStyle: "Creative & Independent",
+      goals: "Design high-impact consumer apps and digital experiences"
+    },
+    fintech: {
+      degree: "B.Com / BBA in Finance & Accounting",
+      interests: "Financial markets, investment analysis, fintech apps, trading",
+      skills: "Financial Modeling, Excel (Advanced), Market Research, Accounting",
+      workStyle: "Team-based & Collaborative",
+      goals: "Work in FinTech strategy, investment banking, or wealth advisory"
+    },
+    iot: {
+      degree: "B.E. Electronics & Communication",
+      interests: "Robotics, microcontrollers, embedded systems, smart devices",
+      skills: "C/C++, Arduino, Raspberry Pi, Circuit Design, Linux",
+      workStyle: "Analytical & Detail-oriented",
+      goals: "Develop next-generation autonomous robotics or smart connected hardware"
+    }
+  };
+
+  function applyPreset(key){
+    const p = PRESETS[key];
+    if (!p) return;
+    document.getElementById('degree').value = p.degree;
+    document.getElementById('interests').value = p.interests;
+    document.getElementById('skills').value = p.skills;
+    document.getElementById('work-style').value = p.workStyle;
+    document.getElementById('goals').value = p.goals;
+    showSuccess(`Loaded "${p.degree}" preset readings!`);
+  }
+
+  function switchTab(tab, btn){
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    const target = document.getElementById(tab + '-tab');
+    if (target) target.classList.add('active');
+    if (btn) btn.classList.add('active');
+  }
+
+  function showError(msg){
+    const el = document.getElementById('error');
+    el.innerHTML = `<strong>Error:</strong> ${msg}`;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 7000);
+  }
+
+  function showSuccess(msg){
+    const el = document.getElementById('success');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3500);
+  }
+
+  // Generate Career Pathways
+  async function generateCareers(){
+    const degree = document.getElementById('degree').value.trim();
+    const interests = document.getElementById('interests').value.trim();
+    const skills = document.getElementById('skills').value.trim();
+    const workStyle = document.getElementById('work-style').value;
+    const goals = document.getElementById('goals').value.trim();
+
+    if (!degree || !interests || !skills || !workStyle){
+      showError('Please complete all marked readings (Degree, Interests, Skills, and Work Style) before charting.');
+      return;
+    }
+
+    currentProfile = { degree, interests, skills, workStyle, goals };
+
+    const chartBtn = document.getElementById('chartBtn');
+    chartBtn.disabled = true;
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('error').style.display = 'none';
+
+    // Structured Prompt for rich AI response
+    const prompt = `You are an expert career advisor, education strategist, and learning coach.
+
+Student Profile:
+- Degree/Branch: ${degree}
+- Interests: ${interests}
+- Current Skills: ${skills}
+- Preferred Work Style: ${workStyle}
+- Career Goals: ${goals || 'Not specified'}
+
+Based on this student profile, suggest EXACTLY 5 realistic, high-potential career paths.
+For maximum consistency, return the response as a JSON object with this exact structure:
+\`\`\`json
+{
+  "careers": [
+    {
+      "title": "Exact Career Title",
+      "matchScore": 92,
+      "whyItMatches": "2-3 insightful sentences explaining why this career aligns with their degree, skills, and work style.",
+      "skills": ["Skill 1 [Beginner]", "Skill 2 [Intermediate]", "Skill 3 [Advanced]", "Skill 4", "Skill 5"],
+      "timeToPredict": "3-5 months",
+      "project": "A specific, impressive beginner portfolio project to build.",
+      "roadmap": [
+        {"week": 1, "task": "Specific task for week 1"},
+        {"week": 2, "task": "Specific task for week 2"},
+        {"week": 3, "task": "Specific task for week 3"},
+        {"week": 4, "task": "Specific task for week 4"},
+        {"week": 5, "task": "Specific task for week 5"},
+        {"week": 6, "task": "Specific task for week 6"},
+        {"week": 7, "task": "Specific task for week 7"},
+        {"week": 8, "task": "Specific task for week 8"},
+        {"week": 9, "task": "Specific task for week 9"},
+        {"week": 10, "task": "Specific task for week 10"},
+        {"week": 11, "task": "Specific task for week 11"},
+        {"week": 12, "task": "Specific task for week 12"}
+      ],
+      "courses": ["Resource/Course 1", "Resource/Course 2", "Resource/Course 3"],
+      "demand": "High (Rapidly growing domain with strong hiring)",
+      "salary": "₹5 - 12 LPA"
+    }
+  ]
+}
+\`\`\`
+Provide all 5 careers in this exact JSON format.`;
+
+    try{
+      const customKey = localStorage.getItem('careercompass_custom_api_key') || undefined;
+      let text = null;
+
+      // Try local/server backend route first
+      try {
+        const response = await fetch("/api/generate-careers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, apiKey: customKey })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          text = data.text;
+        } else if (response.status !== 404 && response.status !== 405) {
+          const errBody = await response.json().catch(() => ({}));
+          throw new Error(errBody.error || `Server returned status ${response.status}`);
+        }
+      } catch (backendErr) {
+        // If not a status error we threw above, let fallback take over
+        if (!backendErr.message.includes("Server returned")) {
+          console.warn("Backend route unavailable, switching to direct Gemini fallback:", backendErr.message);
+        } else {
+          throw backendErr;
+        }
+      }
+
+      // Fallback: Direct Gemini API call (for static Firebase Hosting)
+      if (!text) {
+        const activeKey = customKey || window.CAREERCOMPASS_GEMINI_KEY;
+        if (!activeKey) {
+          throw new Error("Missing Gemini API Key. Click Settings in top bar to configure.");
+        }
+        text = await callGeminiDirectlyFromClient(prompt, activeKey);
+      }
+
+      parseAndDisplayCareers(text);
+
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+      showSuccess('5 Career Routes plotted successfully! Explore routes, compare matrix, and 12-week roadmaps below.');
+
+    } catch (error){
+      console.error('Error generating careers:', error);
+      showError(`Couldn't chart routes: ${error.message}. Please check your server or API settings.`);
+    } finally {
+      document.getElementById('loading').classList.remove('show');
+      chartBtn.disabled = false;
+    }
+  }
+
+  // Direct client-side Gemini fallback (used when deployed to static hosts like Firebase Hosting)
+  async function callGeminiDirectlyFromClient(prompt, apiKey) {
+    const models = ["gemini-3.8-flash", "gemini-flash-lite-latest", "gemini-3.5-flash", "gemini-3.1-flash-lite"];
+    let lastErr = null;
+    for (const model of models) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.7, maxOutputTokens: 6000 }
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          return data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          lastErr = errData.error?.message || `Gemini status ${res.status}`;
+        }
+      } catch (err) {
+        lastErr = err.message;
+      }
+    }
+    throw new Error(lastErr || "Failed to reach Gemini models.");
+  }
+
+  // Multi-Strategy Response Parser
+  function parseAndDisplayCareers(responseText){
+    currentCareers = [];
+
+    // Strategy 1: JSON Parsing
+    try {
+      const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || responseText.match(/(\{[\s\S]*"careers"[\s\S]*\})/);
+      const jsonString = jsonMatch ? jsonMatch[1] : responseText;
+      const parsed = JSON.parse(jsonString);
+      if (parsed && Array.isArray(parsed.careers) && parsed.careers.length > 0){
+        currentCareers = parsed.careers.map((c, i) => normalizeCareer(c, i + 1));
+      }
+    } catch (e) {
+      console.warn("Strategy 1 (JSON) parse bypassed, attempting Markdown parser:", e.message);
+    }
+
+    // Strategy 2: Structured Markdown Block Parser (if JSON didn't catch 5)
+    if (currentCareers.length === 0){
+      const careerBlocks = responseText.split(/(?=\*\*(?:\d\.\s+)?Career Title)|(?=###?\s*(?:\d\.\s*)?Career Title)|(?=Career\s+\d+:)/i);
+
+      for (let i = 0; i < careerBlocks.length && currentCareers.length < 5; i++){
+        const block = careerBlocks[i];
+        if (!block.trim()) continue;
+        const career = parseCareerBlock(block, currentCareers.length + 1);
+        if (career.title && career.title.length > 2) {
+          currentCareers.push(career);
+        }
+      }
+    }
+
+    // Strategy 3: Bullet points fallback
+    if (currentCareers.length === 0){
+      parseCareersFallback(responseText);
+    }
+
+    displayCareers();
+    displayComparison();
+    displaySkillGap();
+    renderCareerVisuals();
+  }
+
+  function normalizeCareer(c, idx){
+    return {
+      title: c.title || `Career Route ${idx}`,
+      matchScore: parseInt(c.matchScore, 10) || (90 - idx * 4),
+      whyItMatches: c.whyItMatches || "Strong alignment with your profile and interests.",
+      skills: Array.isArray(c.skills) ? c.skills : ["Skill 1", "Skill 2", "Skill 3"],
+      timeToPredict: c.timeToPredict || "3-5 months",
+      project: c.project || "Build a complete real-world portfolio project",
+      roadmap: Array.isArray(c.roadmap) && c.roadmap.length > 0 ? c.roadmap.map((w, wIdx) => ({
+        week: w.week || (wIdx + 1),
+        task: w.task || `Focus on domain competencies (Phase ${Math.ceil((wIdx+1)/3)})`
+      })) : generateDefaultRoadmap(),
+      courses: Array.isArray(c.courses) ? c.courses : ["Recommended Online Specialization", "Documentation & Official Guides"],
+      demand: c.demand || "High",
+      salary: c.salary || "₹5 - 10 LPA"
+    };
+  }
+
+  function generateDefaultRoadmap(){
+    return [
+      { week: 1, task: "Master foundational concepts & setup development environment" },
+      { week: 2, task: "Core fundamentals, syntax, and foundational design principles" },
+      { week: 3, task: "Build initial mini-exercises and review key libraries" },
+      { week: 4, task: "Phase 1 review: create first complete working module" },
+      { week: 5, task: "Intermediate architecture, data modeling, and best practices" },
+      { week: 6, task: "API integration, database connectivity, or interface state" },
+      { week: 7, task: "Begin capstone project: requirements, wireframes, and architecture" },
+      { week: 8, task: "Capstone development: core logic and functional features" },
+      { week: 9, task: "Testing, edge cases, error handling, and performance optimization" },
+      { week: 10, task: "Polishing UI/UX, documentation, and GitHub deployment" },
+      { week: 11, task: "Resume crafting, portfolio showcase, and networking reach-out" },
+      { week: 12, task: "Mock technical interviews, system reviews, and job applications" }
+    ];
+  }
+
+  function parseCareerBlock(block, index){
+    return {
+      title: extractText(block, /(?:\*\*Career Title\*\*|Career Title|Title):\s*(.+?)(?:\n|\*\*|$)/i) || `Route ${index}`,
+      matchScore: parseInt(extractText(block, /(?:\*\*Match Score\*\*|Match Score):\s*(\d+)%/i) || (88 - index * 4), 10),
+      whyItMatches: extractText(block, /(?:\*\*Why It Matches\*\*|Why It Matches):\s*(.+?)(?:\n\n|\*\*|\n[A-Z]|$)/is) || "Well-suited to your stated skills and degree background.",
+      skills: extractList(block, /(?:\*\*Key Skills to Learn\*\*|Key Skills|Skills):\s*([\s\S]+?)(?:\n\n|\*\*|\n[A-Z]|$)/i),
+      timeToPredict: extractText(block, /(?:\*\*Time to Prepare\*\*|Time to Prepare):\s*(.+?)(?:\n|\*\*|$)/i) || "3-4 months",
+      project: extractText(block, /(?:\*\*Beginner Project\*\*|Beginner Project|Project):\s*(.+?)(?:\n|\*\*|$)/is) || "Build a full-stack portfolio piece demonstrating these skills.",
+      roadmap: extractRoadmap(block),
+      courses: extractList(block, /(?:\*\*Required Courses|Resources\*\*|Courses|Resources):\s*([\s\S]+?)(?:\n\n|\*\*|$)/i),
+      demand: extractText(block, /(?:\*\*Job Market Demand\*\*|Market Demand|Demand):\s*(.+?)(?:\n|\*\*|$)/i) || "High",
+      salary: extractText(block, /(?:\*\*Salary Range\*\*|Salary Range|Salary):\s*(.+?)(?:\n|\*\*|$)/i) || "₹4-10 LPA"
+    };
+  }
+
+  function extractText(text, regex){
+    const match = text.match(regex);
+    return match ? match[1].trim() : null;
+  }
+
+  function extractList(text, regex){
+    const match = text.match(regex);
+    if (!match) return [];
+    return match[1].split(/[\n\-•·]/).filter(item => item.trim()).slice(0, 7).map(item => item.trim());
+  }
+
+  function extractRoadmap(text){
+    const roadmapMatch = text.match(/(?:\*\*12-Week Learning Plan\*\*|12-Week Plan|Roadmap):\s*([\s\S]+?)(?:\n\n|\*\*|$)/i);
+    if (!roadmapMatch) return generateDefaultRoadmap();
+    const weeks = roadmapMatch[1].split(/Week\s*\d+[:\-]?/i);
+    const parsed = weeks.filter(w => w.trim()).slice(0, 12).map((week, idx) => ({
+      week: idx + 1,
+      task: week.trim().split('\n')[0].replace(/^[-•*]\s*/, '') || `Week ${idx + 1}: Study domain fundamentals`
+    }));
+    return parsed.length > 0 ? parsed : generateDefaultRoadmap();
+  }
+
+  function parseCareersFallback(responseText){
+    const lines = responseText.split('\n').filter(line => line.trim());
+    let currentCareer = null;
+
+    for (const line of lines){
+      if (/^#+\s+\d+\.\s+/i.test(line) || /Career\s+\d+/i.test(line)){
+        if (currentCareer && currentCareer.title) currentCareers.push(currentCareer);
+        currentCareer = {
+          title: line.replace(/^#+\s*/, '').replace(/Career\s+\d+:\s*/i, '').trim(),
+          matchScore: 85,
+          whyItMatches: "Strong match for your academic and skill background.",
+          skills: ["Key Skill 1", "Key Skill 2", "Key Skill 3", "Portfolio Building"],
+          timeToPredict: "3-5 months",
+          project: "Build an end-to-end showcase project",
+          roadmap: generateDefaultRoadmap(),
+          courses: ["Coursera / edX Specialization", "Official Developer Documentation"],
+          demand: "High",
+          salary: "₹5-10 LPA"
+        };
+      }
+    }
+    if (currentCareer && currentCareer.title) currentCareers.push(currentCareer);
+  }
+
+  // Display Career Cards with Interactive Checklists
+  function displayCareers(){
+    const container = document.getElementById('careersContainer');
+    container.innerHTML = currentCareers.map((career, idx) => {
+      const savedWeeks = getSavedWeekProgress(career.title);
+      const completedCount = savedWeeks.length;
+      const progressPct = Math.round((completedCount / 12) * 100);
+
+      return `
+      <article class="waypoint" id="career-card-${idx}">
+        <div class="waypoint-mark">
+          <span class="waypoint-rank">Route ${idx + 1}</span>
+          <div class="bearing-ring" style="--pct:${career.matchScore}">
+            <div class="bearing-ring-inner">${career.matchScore}%</div>
+          </div>
+        </div>
+        <div class="waypoint-body">
+          <div class="waypoint-title">${career.title}</div>
+          <p class="waypoint-reason">${career.whyItMatches}</p>
+
+          <div class="waypoint-tags">
+            ${career.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+          </div>
+
+          <dl class="waypoint-stats">
+            <div><dt>Time to prepare</dt><dd>${career.timeToPredict}</dd></div>
+            <div><dt>Starting salary</dt><dd>${career.salary}</dd></div>
+            <div><dt>Market demand</dt><dd>${career.demand}</dd></div>
+          </dl>
+
+          <div class="waypoint-project">
+            <span class="mono-label">First Milestone Project</span>
+            <p>${career.project}</p>
+          </div>
+
+          <!-- Interactive 12-Week Roadmap -->
+          <div class="waypoint-roadmap">
+            <div class="roadmap-progress-header">
+              <span class="mono-label">Interactive 12-Week Roadmap</span>
+              <span class="roadmap-progress-count" id="prog-count-${idx}">${completedCount}/12 weeks completed (${progressPct}%)</span>
+            </div>
+            <div class="roadmap-track">
+              <div class="roadmap-track-fill" id="prog-fill-${idx}" style="width: ${progressPct}%;"></div>
+            </div>
+            <div class="roadmap-list">
+              ${career.roadmap.map(item => {
+                const isChecked = savedWeeks.includes(item.week);
+                return `
+                  <label class="roadmap-item-row ${isChecked ? 'done' : ''}" id="week-row-${idx}-${item.week}">
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleWeekProgress('${escapeQuotes(career.title)}', ${item.week}, this, ${idx})">
+                    <div class="roadmap-item-text">
+                      <strong>Week ${item.week}:</strong> ${item.task}
+                    </div>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <div class="waypoint-actions">
+            <button type="button" class="btn" onclick="saveCareer(${idx})">⭐ Save to Logbook</button>
+            <button type="button" class="btn btn-ghost" onclick="copyRouteText(${idx})">📋 Copy Route</button>
+          </div>
+        </div>
+      </article>
+      `;
+    }).join('');
+  }
+
+  function escapeQuotes(str){
+    return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  }
+
+  // Interactive Checklist Logic
+  function getSavedWeekProgress(careerTitle){
+    const key = `prog_${careerTitle.toLowerCase().replace(/\s+/g, '_')}`;
+    try{
+      return JSON.parse(localStorage.getItem(key) || '[]');
+    } catch(e){
+      return [];
+    }
+  }
+
+  function toggleWeekProgress(careerTitle, weekNum, checkbox, cardIdx){
+    const key = `prog_${careerTitle.toLowerCase().replace(/\s+/g, '_')}`;
+    let saved = getSavedWeekProgress(careerTitle);
+
+    if (checkbox.checked){
+      if (!saved.includes(weekNum)) saved.push(weekNum);
+    } else {
+      saved = saved.filter(w => w !== weekNum);
+    }
+    localStorage.setItem(key, JSON.stringify(saved));
+
+    const row = document.getElementById(`week-row-${cardIdx}-${weekNum}`);
+    if (row){
+      if (checkbox.checked) row.classList.add('done');
+      else row.classList.remove('done');
+    }
+
+    const completed = saved.length;
+    const pct = Math.round((completed / 12) * 100);
+    const countEl = document.getElementById(`prog-count-${cardIdx}`);
+    const fillEl = document.getElementById(`prog-fill-${cardIdx}`);
+    if (countEl) countEl.textContent = `${completed}/12 weeks completed (${pct}%)`;
+    if (fillEl) fillEl.style.width = `${pct}%`;
+
+    if (pct === 100){
+      showSuccess(`🎉 Congratulations! You have completed all 12 weeks of the ${careerTitle} roadmap!`);
+    }
+
+    if (window.CareerCompassFirebase && typeof window.CareerCompassFirebase.syncAll === 'function') {
+      window.CareerCompassFirebase.syncAll(false);
+    }
+  }
+
+  // Comparison Table
+  function displayComparison(){
+    const tbody = document.getElementById('comparisonBody');
+    tbody.innerHTML = currentCareers.map(career => `
+      <tr>
+        <td><strong>${career.title}</strong></td>
+        <td><span style="color:var(--brass); font-family:var(--font-mono); font-weight:600;">${career.matchScore}%</span></td>
+        <td>${career.timeToPredict}</td>
+        <td><span class="tag" style="padding:2px 8px;">${career.demand}</span></td>
+        <td>${career.salary}</td>
+        <td>${career.skills.slice(0, 3).join(', ')}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Skill Gap Analysis
+  function displaySkillGap(){
+    const container = document.getElementById('skillGapContainer');
+    const userSkillsRaw = (currentProfile.skills || '').toLowerCase();
+    const userSkills = userSkillsRaw.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+
+    container.innerHTML = currentCareers.map(career => {
+      const cleanSkills = career.skills.map(s => {
+        const name = s.replace(/\[.*?\]/g, '').trim();
+        return { original: s, name: name, lower: name.toLowerCase() };
+      });
+
+      const acquired = cleanSkills.filter(s =>
+        userSkills.some(us => s.lower.includes(us) || us.includes(s.lower))
+      );
+      const toLearn = cleanSkills.filter(s =>
+        !userSkills.some(us => s.lower.includes(us) || us.includes(s.lower))
+      );
+
+      const matchPct = cleanSkills.length > 0 ? Math.round((acquired.length / cleanSkills.length) * 100) : 50;
+
+      return `
+        <div class="skill-gap">
+          <div class="skill-gap-title">
+            <span>${career.title}</span>
+            <span class="skill-gap-count">${acquired.length}/${cleanSkills.length} Skills Acquired (${matchPct}%)</span>
+          </div>
+          <div class="horizon"><div class="horizon-fill" style="width:${matchPct}%"></div></div>
+          
+          <div class="skill-pill-container">
+            ${acquired.map(s => `<span class="skill-pill have">✓ ${s.name} (Acquired)</span>`).join('')}
+            ${toLearn.map(s => `<span class="skill-pill learn">+ ${s.name} (To Learn)</span>`).join('')}
+          </div>
+
+          <div class="skill-gap-detail">
+            ${acquired.length > 0 
+              ? `You already possess strong foundations in <strong>${acquired.map(a => a.name).join(', ')}</strong>.` 
+              : `This route introduces fresh technical skills to expand your capabilities.`}
+            Focus next on mastering: <strong>${toLearn.slice(0, 3).map(l => l.name).join(', ') || 'Capstone Portfolio'}</strong>.
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Logbook Management
+  function saveCareer(index){
+    const career = currentCareers[index];
+    let saved = JSON.parse(localStorage.getItem('savedCareers') || '[]');
+    if (!saved.find(c => c.title === career.title)){
+      saved.push(career);
+      localStorage.setItem('savedCareers', JSON.stringify(saved));
+      showSuccess(`"${career.title}" added to your logbook!`);
+      displaySavedCareers();
+      if (window.CareerCompassFirebase && typeof window.CareerCompassFirebase.syncAll === 'function') {
+        window.CareerCompassFirebase.syncAll(false);
+      }
+    } else {
+      showError(`"${career.title}" is already in your logbook.`);
+    }
+  }
+
+  function displaySavedCareers(){
+    const container = document.getElementById('savedCareersContainer');
+    const saved = JSON.parse(localStorage.getItem('savedCareers') || '[]');
+    const noSaved = document.getElementById('noSaved');
+    const savedCountEl = document.getElementById('savedCount');
+
+    if (savedCountEl) savedCountEl.textContent = saved.length;
+
+    if (saved.length === 0){
+      container.innerHTML = '';
+      noSaved.style.display = 'block';
+      return;
+    }
+
+    noSaved.style.display = 'none';
+    container.innerHTML = saved.map((career, idx) => `
+      <div class="logbook-item">
+        <div>
+          <h3>${career.title}</h3>
+          <div class="logbook-meta">${career.matchScore}% Match &bull; Prep: ${career.timeToPredict} &bull; Expected: ${career.salary}</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="remove-btn" onclick="removeCareer(${idx})">Remove</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function removeCareer(index){
+    let saved = JSON.parse(localStorage.getItem('savedCareers') || '[]');
+    saved.splice(index, 1);
+    localStorage.setItem('savedCareers', JSON.stringify(saved));
+    displaySavedCareers();
+    showSuccess('Route removed from logbook.');
+    if (window.CareerCompassFirebase && typeof window.CareerCompassFirebase.syncAll === 'function') {
+      window.CareerCompassFirebase.syncAll(false);
+    }
+  }
+
+  // Export / Copy Actions
+  function copyRouteText(idx){
+    const career = currentCareers[idx];
+    if (!career) return;
+    let text = `CAREER ROUTE: ${career.title.toUpperCase()}\n`;
+    text += `Match Score: ${career.matchScore}%\n`;
+    text += `Preparation Time: ${career.timeToPredict}\n`;
+    text += `Market Demand: ${career.demand}\n`;
+    text += `Expected Salary: ${career.salary}\n\n`;
+    text += `Why It Matches:\n${career.whyItMatches}\n\n`;
+    text += `Key Skills:\n${career.skills.join(', ')}\n\n`;
+    text += `Milestone Project:\n${career.project}\n\n`;
+    text += `12-Week Roadmap:\n`;
+    career.roadmap.forEach(r => { text += `  Week ${r.week}: ${r.task}\n`; });
+
+    navigator.clipboard.writeText(text).then(() => {
+      showSuccess(`"${career.title}" route copied to clipboard!`);
+    }).catch(() => {
+      showError('Unable to copy to clipboard.');
+    });
+  }
+
+  function copyFullPlan(){
+    if (currentCareers.length === 0){
+      showError('Please chart your routes first.');
+      return;
+    }
+    let text = `CAREERCOMPASS — STUDENT CAREER ADVISOR LOG\n`;
+    text += `Degree: ${currentProfile.degree} | Interests: ${currentProfile.interests}\n\n`;
+    currentCareers.forEach((c, idx) => {
+      text += `--- ROUTE ${idx + 1}: ${c.title.toUpperCase()} (${c.matchScore}% Match) ---\n`;
+      text += `Prep Time: ${c.timeToPredict} | Salary: ${c.salary} | Demand: ${c.demand}\n`;
+      text += `Why It Fits: ${c.whyItMatches}\n`;
+      text += `Starter Project: ${c.project}\n\n`;
+    });
+
+    navigator.clipboard.writeText(text).then(() => {
+      showSuccess('All 5 career routes copied to clipboard!');
+    }).catch(() => {
+      showError('Unable to copy to clipboard.');
+    });
+  }
+
+  function downloadRoadmap(){
+    if (currentCareers.length === 0){
+      showError('Chart your routes first before downloading.');
+      return;
+    }
+
+    let content = `================================================================================\n`;
+    content += `                    CAREERCOMPASS — STUDENT CAREER ADVISOR LOG\n`;
+    content += `================================================================================\n\n`;
+    content += `Student Profile:\n`;
+    content += `- Degree / Branch: ${currentProfile.degree}\n`;
+    content += `- Primary Interests: ${currentProfile.interests}\n`;
+    content += `- Current Skill Set: ${currentProfile.skills}\n`;
+    content += `- Work Style: ${currentProfile.workStyle}\n`;
+    content += `- Career Goals: ${currentProfile.goals || 'Not specified'}\n\n`;
+    content += `================================================================================\n\n`;
+
+    currentCareers.forEach((career, idx) => {
+      content += `ROUTE ${idx + 1}: ${career.title.toUpperCase()}\n`;
+      content += `--------------------------------------------------------------------------------\n`;
+      content += `Match Score:       ${career.matchScore}%\n`;
+      content += `Time to Prepare:   ${career.timeToPredict}\n`;
+      content += `Market Demand:     ${career.demand}\n`;
+      content += `Expected Salary:   ${career.salary}\n\n`;
+      content += `WHY IT MATCHES:\n${career.whyItMatches}\n\n`;
+      content += `KEY SKILLS TO DEVELOP:\n`;
+      career.skills.forEach((skill, i) => { content += `  ${i + 1}. ${skill}\n`; });
+      content += `\nFIRST MILESTONE PROJECT:\n${career.project}\n\n`;
+      content += `12-WEEK ACTION ROADMAP:\n`;
+      career.roadmap.forEach(item => {
+        content += `  Week ${item.week.toString().padStart(2, ' ')}: ${item.task}\n`;
+      });
+      content += `\nRECOMMENDED LEARNING RESOURCES:\n`;
+      career.courses.forEach((course, i) => { content += `  ${i + 1}. ${course}\n`; });
+      content += `\n================================================================================\n\n`;
+    });
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const el = document.createElement('a');
+    el.href = url;
+    el.download = `CareerCompass_${(currentProfile.degree || 'Routes').replace(/[^a-zA-Z0-9]/g, '_')}.txt`;
+    el.click();
+    URL.revokeObjectURL(url);
+    showSuccess('Career route log downloaded successfully.');
+  }
+
+  // Settings Modal Functions
+  function openSettingsModal(){
+    const input = document.getElementById('customApiKey');
+    input.value = localStorage.getItem('careercompass_custom_api_key') || '';
+    document.getElementById('settingsNotice').style.display = 'none';
+    document.getElementById('settingsModal').classList.add('open');
+  }
+
+  function closeSettingsModal(){
+    document.getElementById('settingsModal').classList.remove('open');
+  }
+
+  function saveSettings(){
+    const key = document.getElementById('customApiKey').value.trim();
+    if (key){
+      localStorage.setItem('careercompass_custom_api_key', key);
+      showSuccess('Custom API key saved in browser storage.');
+    } else {
+      localStorage.removeItem('careercompass_custom_api_key');
+      showSuccess('Using server default API configuration.');
+    }
+    closeSettingsModal();
+  }
+
+  async function testConnection(){
+    const notice = document.getElementById('settingsNotice');
+    notice.className = 'notice';
+    notice.textContent = 'Testing connection to server and API...';
+    notice.style.display = 'block';
+
+    try {
+      const res = await fetch('/api/health');
+      if (res.ok){
+        const data = await res.json();
+        notice.className = 'notice success';
+        notice.textContent = `Server reachable! Gemini Key: ${data.hasApiKey ? 'Found in .env' : 'Missing in .env'}. Node ${data.nodeVersion}`;
+        document.getElementById('systemStatusText').textContent = 'Server Online';
+        return;
+      }
+    } catch(e) {}
+
+    notice.className = 'notice error';
+    notice.textContent = 'Could not reach /api/health. Ensure "node server.js" or "start-app.bat" is running.';
+  }
+
+  // Health check on load
+  async function checkServerHealth(){
+    try {
+      const res = await fetch('/api/health');
+      if (res.ok){
+        document.getElementById('systemStatusText').textContent = 'Server Online';
+      }
+    } catch (e) {
+      document.getElementById('systemStatusText').textContent = 'Backend Offline';
+      const badge = document.getElementById('systemStatusBadge');
+      badge.style.color = 'var(--rust)';
+      badge.style.borderColor = 'rgba(193,97,74,0.3)';
+      badge.style.background = 'rgba(193,97,74,0.1)';
+      document.querySelector('.status-dot').style.background = 'var(--rust)';
+    }
+  }
+
+  // Firebase Setup Modal Functions
+  function openFirebaseSettingsModal() {
+    if (window.CareerCompassFirebase && typeof window.CareerCompassFirebase.openConfig === 'function') {
+      window.CareerCompassFirebase.openConfig();
+    } else {
+      const modal = document.getElementById('firebaseConfigModal');
+      if (modal) modal.classList.add('open');
+    }
+  }
+
+  function switchFirebaseTab(tab) {
+    const pasteTab = document.getElementById('fbTabPaste');
+    const manualTab = document.getElementById('fbTabManual');
+    const pasteBtn = document.getElementById('fbTabPasteBtn');
+    const manualBtn = document.getElementById('fbTabManualBtn');
+
+    if (tab === 'paste') {
+      pasteTab.style.display = 'block';
+      manualTab.style.display = 'none';
+      pasteBtn.classList.add('active');
+      manualBtn.classList.remove('active');
+    } else {
+      pasteTab.style.display = 'none';
+      manualTab.style.display = 'block';
+      pasteBtn.classList.remove('active');
+      manualBtn.classList.add('active');
+    }
+  }
+
+  function parseAndSaveFirebaseSnippet() {
+    const raw = document.getElementById('fbSnippetInput').value.trim();
+    if (!raw) {
+      alert('Please paste your Firebase configuration code or JSON object.');
+      return;
+    }
+
+    let config = null;
+    try {
+      config = JSON.parse(raw);
+    } catch (e) {}
+
+    if (!config) {
+      const keys = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'messagingSenderId', 'appId'];
+      const extracted = {};
+      for (const k of keys) {
+        const regex = new RegExp(`['"]?${k}['"]?\\s*:\\s*['"\`]([^'"\`]+)['"\`]`);
+        const m = raw.match(regex);
+        if (m) extracted[k] = m[1].trim();
+      }
+      if (extracted.apiKey && extracted.projectId) {
+        config = extracted;
+      }
+    }
+
+    if (config && config.apiKey && config.projectId) {
+      window.CareerCompassFirebase?.saveConfig(config);
+    } else {
+      alert('Could not find valid apiKey and projectId in snippet. Please check the text or use the Individual Fields tab.');
+    }
+  }
+
+  function saveManualFirebaseFields() {
+    const config = {
+      apiKey: document.getElementById('fbApiKey').value.trim(),
+      authDomain: document.getElementById('fbAuthDomain').value.trim(),
+      projectId: document.getElementById('fbProjectId').value.trim(),
+      storageBucket: document.getElementById('fbStorageBucket').value.trim(),
+      messagingSenderId: document.getElementById('fbMessagingSenderId').value.trim(),
+      appId: document.getElementById('fbAppId').value.trim()
+    };
+
+    if (!config.apiKey || !config.projectId) {
+      alert('Please enter at least the API Key and Project ID.');
+      return;
+    }
+
+    window.CareerCompassFirebase?.saveConfig(config);
+  }
+
+  window.addEventListener('load', () => {
+    displaySavedCareers();
+    checkServerHealth();
+  });
+</script>
+<script src="/features.js" defer></script>
+<script src="/careers-data.js" defer></script>
+<script src="/career-tools.js" defer></script>
+<script src="/firebase-config.js"></script>
+<script type="module" src="/firebase-service.js"></script>
+</body>
+</html>
