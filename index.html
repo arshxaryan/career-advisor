@@ -6,23 +6,23 @@
 <title>CareerCompass — Student Career Advisor & Learning Route Planner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0B0B0D;
-    --bg-panel: #141416;
-    --bg-raised: #1B1B1E;
-    --border: #2A2A2E;
-    --border-soft: #202023;
-    --text: #EFEDE6;
-    --text-muted: #96938B;
-    --text-faint: #5C5A55;
-    --brass: #C9A063;
-    --brass-dim: #8A7148;
-    --brass-wash: rgba(201,160,99,0.12);
-    --teal: #5FA8A3;
-    --teal-wash: rgba(95,168,163,0.12);
-    --rust: #C1614A;
+    --bg: #0A1220;
+    --bg-panel: #111C2E;
+    --bg-raised: #18263A;
+    --border: #2B3B53;
+    --border-soft: #223047;
+    --text: #F3F6FA;
+    --text-muted: #B8C4D3;
+    --text-faint: #8798AF;
+    --brass: #F2C36B;
+    --brass-dim: #B88A40;
+    --brass-wash: rgba(242,195,107,0.14);
+    --teal: #5EEAD4;
+    --teal-wash: rgba(94,234,212,0.13);
+    --rust: #FB8A76;
     --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
     --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
@@ -33,7 +33,7 @@
   html{ scroll-behavior:smooth; }
 
   body{
-    background: radial-gradient(ellipse 90% 60% at 50% -10%, #16151a 0%, var(--bg) 55%);
+    background: radial-gradient(ellipse 90% 60% at 50% -10%, #1A2A42 0%, var(--bg) 58%);
     color: var(--text);
     font-family: var(--font-body);
     line-height: 1.55;
@@ -193,7 +193,7 @@
     left: 50%;
     width: clamp(74px, 10vw, 120px);
     aspect-ratio: 0.72;
-    border: 1px solid rgba(201,160,99,0.65);
+    border: 1px solid var(--brass-dim);
     border-radius: 6px;
     overflow: hidden;
     background: var(--bg-raised);
@@ -847,6 +847,7 @@
     .tag { border: 1px solid #666; color: #000; }
   }
 </style>
+<link rel="stylesheet" href="/features.css">
 </head>
 <body>
 
@@ -855,15 +856,25 @@
   <div class="top-bar">
     <div class="wordmark">CAREER<span>COMPASS</span> &bull; Student Career Advisor &amp; Route Planner</div>
     <div class="top-actions">
+      <button type="button" class="settings-link-btn exit-quick-btn" onclick="exitQuickly()" aria-label="Leave this page and open a neutral page">✕ Exit Quickly</button>
       <div class="status-badge" id="systemStatusBadge" title="Server connectivity status">
         <span class="status-dot"></span>
         <span id="systemStatusText">Server Online</span>
       </div>
+      <button type="button" class="settings-link-btn theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark mode</button>
       <button type="button" class="settings-link-btn" onclick="openSettingsModal()">⚙ Settings</button>
     </div>
   </div>
 
-  <header class="hero">
+  <nav class="app-page-nav" aria-label="Main sections" role="tablist">
+    <button type="button" class="app-page-btn active" role="tab" aria-selected="true" data-page="career" onclick="switchAppPage('career', this)">🧭 Career Advisor</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="exams" onclick="switchAppPage('exams', this)">📚 Exams &amp; Roadmaps</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="support" onclick="switchAppPage('support', this)">🧡 Student Support</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="quiz" onclick="switchAppPage('quiz', this)">✨ Interest Quiz</button>
+    <button type="button" class="app-page-btn" role="tab" aria-selected="false" data-page="explorer" onclick="switchAppPage('explorer', this)">🔎 Career Explorer</button>
+  </nav>
+
+  <header class="hero" data-app-page="career">
     <div class="background-paths" aria-hidden="true">
       <svg viewBox="0 0 696 316" preserveAspectRatio="xMidYMid slice" role="presentation">
         <g class="paths-left" stroke-width="0.65">
@@ -891,14 +902,14 @@
       </svg>
     </div>
     <div class="image-stream" aria-hidden="true">
-      <div class="image-stream-card" style="--stream-delay: -1s"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=70" alt=""></div>
-      <div class="image-stream-card" style="--stream-delay: -7s"><img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=300&q=70" alt=""></div>
-      <div class="image-stream-card" style="--stream-delay: -13s"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&q=70" alt=""></div>
-      <div class="image-stream-card" style="--stream-delay: -4s"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&q=70" alt=""></div>
-      <div class="image-stream-card left" style="--stream-delay: -3s"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=300&q=70" alt=""></div>
-      <div class="image-stream-card left" style="--stream-delay: -9s"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=300&q=70" alt=""></div>
-      <div class="image-stream-card left" style="--stream-delay: -15s"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=300&q=70" alt=""></div>
-      <div class="image-stream-card left" style="--stream-delay: -6s"><img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&q=70" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -1s"><img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -7s"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -13s"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card" style="--stream-delay: -4s"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -3s"><img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -9s"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -15s"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
+      <div class="image-stream-card left" style="--stream-delay: -6s"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt=""></div>
     </div>
     <div class="hero-grid">
       <div class="hero-copy">
@@ -940,7 +951,22 @@
     </div>
   </header>
 
-  <section class="panel" id="plan-form">
+  <section class="real-world-gallery" data-app-page="career" aria-label="Career paths in real-world settings">
+    <figure class="real-world-photo">
+      <img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1000" alt="Colleagues sharing ideas around a laptop at work" loading="lazy" decoding="async">
+      <figcaption><span class="mono-label">WORK TOGETHER</span><strong>Ideas grow through collaboration.</strong></figcaption>
+    </figure>
+    <figure class="real-world-photo">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="Students learning together around a laptop" loading="lazy" decoding="async">
+      <figcaption><span class="mono-label">LEARN BY DOING</span><strong>Build skills with real projects.</strong></figcaption>
+    </figure>
+    <figure class="real-world-photo">
+      <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="Teacher guiding students in a classroom" loading="lazy" decoding="async">
+      <figcaption><span class="mono-label">FIND YOUR DIRECTION</span><strong>Turn guidance into next steps.</strong></figcaption>
+    </figure>
+  </section>
+
+  <section class="panel" id="plan-form" data-app-page="career">
     <div class="panel-head">
       <h2>Student Coordinates</h2>
       <p>Fill out your profile or select a student preset to test immediately.</p>
@@ -994,16 +1020,16 @@
     </button>
   </section>
 
-  <div id="loading" class="loading">
+  <div id="loading" class="loading" data-app-page="career">
     <div class="bearing-spin"></div>
     <p>Plotting your career routes with AI advisor...</p>
     <div class="loading-subtext">Evaluating job demand, preparing match scores &amp; mapping 12-week roadmap</div>
   </div>
 
-  <div id="error" class="notice error"></div>
-  <div id="success" class="notice success"></div>
+  <div id="error" class="notice error" data-app-page="career"></div>
+  <div id="success" class="notice success" data-app-page="career"></div>
 
-  <section id="results" class="results-section">
+  <section id="results" class="results-section" data-app-page="career">
     <div class="results-toolbar">
       <div class="tabs" role="tablist">
         <button class="tab-btn active" data-tab="careers" onclick="switchTab('careers', this)">Recommended Routes</button>
@@ -1021,12 +1047,24 @@
     <!-- Tab 1: Recommended Routes -->
     <div id="careers-tab" class="tab-content active">
       <h2>Recommended Career Routes</h2>
+      <section class="chart-panel" aria-labelledby="radar-title">
+        <div class="feature-heading"><div><span class="mono-label">PROFILE OVERVIEW</span><h3 id="radar-title">Skill Fit Radar Chart</h3></div><span class="feature-caption">Relative route fit</span></div>
+        <div id="skillRadarChart" class="chart-canvas" aria-live="polite"></div>
+      </section>
       <div id="careersContainer" class="route-list"></div>
+      <section class="chart-panel journey-flow-panel" aria-labelledby="journey-flow-title">
+        <div class="feature-heading"><div><span class="mono-label">YOUR WAY FORWARD</span><h3 id="journey-flow-title">Career Journey Flow</h3></div><span class="feature-caption">One milestone at a time</span></div>
+        <div id="careerJourneyFlow" class="career-journey-flow"></div>
+      </section>
     </div>
 
     <!-- Tab 2: Comparison -->
     <div id="comparison-tab" class="tab-content">
       <h2>Career Route Comparison</h2>
+      <section class="chart-panel" aria-labelledby="comparison-chart-title">
+        <div class="feature-heading"><div><span class="mono-label">ROUTE METRICS</span><h3 id="comparison-chart-title">Grouped Route Comparison</h3></div><span class="feature-caption">Match score and skill fit</span></div>
+        <div id="comparisonChart" class="chart-canvas" aria-live="polite"></div>
+      </section>
       <div class="table-scroll">
         <table>
           <thead>
@@ -1064,6 +1102,193 @@
       💾 Download Full Personalized Route Log (.txt)
     </button>
   </section>
+
+  <main id="exams-page" class="app-section-page" data-app-page="exams" hidden>
+    <section class="feature-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">EXAMS &amp; ROADMAPS</span>
+        <h1>Choose your next <em>milestone.</em></h1>
+        <p>Explore entrance and career exams, compare their patterns, and build a practical 12-month study checklist. Exam details can change—always verify dates and rules on the official exam website.</p>
+      </div>
+      <figure class="real-world-photo feature-hero-photo">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Students learning together in a classroom" loading="lazy" decoding="async">
+        <figcaption><span class="mono-label">PREPARE WITH PURPOSE</span><strong>Every big goal starts with a study session.</strong></figcaption>
+      </figure>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Find an exam</h2><p>Filter the guide by field and preparation level.</p></div>
+      <div class="exam-filters">
+        <label class="field"><span class="field-label" for="examCategoryFilter">CATEGORY</span><select id="examCategoryFilter" onchange="renderExamCards()"><option value="all">All categories</option></select></label>
+        <label class="field"><span class="field-label" for="examDifficultyFilter">DIFFICULTY</span><select id="examDifficultyFilter" onchange="renderExamCards()"><option value="all">All levels</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
+      </div>
+      <div id="examCards" class="exam-grid"></div>
+      <div id="examDetail" class="exam-detail" aria-live="polite"><p class="empty-state">Select an exam card to explore its pattern and preparation timeline.</p></div>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Which exam suits me?</h2><p>Share your interests and strengths for a personalized starting point. The AI suggestion is guidance, not an official eligibility decision.</p></div>
+      <div class="field-grid">
+        <label class="field"><span class="field-label" for="examInterests">INTERESTS</span><input id="examInterests" type="text" placeholder="e.g. engineering, public service, design"></label>
+        <label class="field"><span class="field-label" for="examStrengths">SUBJECT STRENGTHS</span><input id="examStrengths" type="text" placeholder="e.g. maths, biology, writing"></label>
+      </div>
+      <button type="button" class="btn btn-primary feature-button" onclick="recommendExams()">✨ Recommend exams</button>
+      <div id="examRecommendation" class="feature-message" aria-live="polite"></div>
+    </section>
+    <section class="panel study-planner-panel">
+      <div class="panel-head"><span class="mono-label">YOUR NEXT STEPS</span><h2>Build a study roadmap</h2><p>Pick an exam and a pace. Your roadmap and check-ins stay saved in this browser.</p></div>
+      <div class="study-plan-controls">
+        <label class="field"><span class="field-label" for="studyPlanExam">EXAM</span><select id="studyPlanExam"></select></label>
+        <label class="field"><span class="field-label" for="studyDuration">PREPARATION WINDOW</span><select id="studyDuration"><option value="3">3 months</option><option value="6">6 months</option><option value="9">9 months</option><option value="12" selected>12 months</option></select></label>
+        <label class="field daily-hours-field"><span class="field-label" for="dailyStudyHours">DAILY STUDY HOURS</span><input id="dailyStudyHours" type="number" min="1" max="16" step="1" value="3"></label>
+        <button type="button" class="btn" onclick="generateStudyPlan()">Generate study plan</button>
+      </div>
+      <p class="study-hours-note">Weekly study targets assume six study days and one rest day.</p>
+      <div id="studyPlan" class="study-plan-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <main id="support-page" class="app-section-page" data-app-page="support" hidden>
+    <section class="feature-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">STUDENT SUPPORT</span>
+        <h1>A softer place to <em>pause.</em></h1>
+        <p>Take a moment, check in with yourself, or find a real person to talk to. You can use the tools here without signing in.</p>
+      </div>
+      <figure class="real-world-photo feature-hero-photo">
+        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="A group spending time together outdoors" loading="lazy" decoding="async">
+        <figcaption><span class="mono-label">YOU DON'T HAVE TO DO IT ALONE</span><strong>Support starts with connection.</strong></figcaption>
+      </figure>
+    </section>
+    <section class="panel helpline-panel">
+      <div class="panel-head"><h2>Real people, here to help</h2><p>If you feel unsafe or need immediate help, contact emergency services or a trusted person now.</p></div>
+      <div class="helpline-grid">
+        <a class="helpline-card emergency-card" href="tel:112"><span class="mono-label">EMERGENCY • INDIA</span><strong>112</strong><span>Call for immediate emergency assistance</span><span class="helpline-action">Call 112 ↗</span></a>
+        <a class="helpline-card" href="tel:14416"><span class="mono-label">TELE-MANAS • INDIA</span><strong>14416</strong><span>National tele-mental health support</span><span class="helpline-action">Call 14416 ↗</span></a>
+      </div>
+      <p class="support-note">Helplines shown are for India. If you are elsewhere, contact your local emergency number or crisis service.</p>
+    </section>
+    <div class="support-grid">
+      <section class="panel">
+        <div class="panel-head"><h2>Mood check-in</h2><p>How are you feeling right now? Your check-ins stay in this browser.</p></div>
+        <div class="mood-scale" role="group" aria-label="Choose your mood">
+          <button type="button" class="mood-choice" data-mood="1" aria-label="Very low" aria-pressed="false" onclick="recordMood(1)">😞<span>Low</span></button>
+          <button type="button" class="mood-choice" data-mood="2" aria-label="A little low" aria-pressed="false" onclick="recordMood(2)">😕<span>Uneasy</span></button>
+          <button type="button" class="mood-choice" data-mood="3" aria-label="Okay" aria-pressed="false" onclick="recordMood(3)">😐<span>Okay</span></button>
+          <button type="button" class="mood-choice" data-mood="4" aria-label="Good" aria-pressed="false" onclick="recordMood(4)">🙂<span>Good</span></button>
+          <button type="button" class="mood-choice" data-mood="5" aria-label="Great" aria-pressed="false" onclick="recordMood(5)">😄<span>Great</span></button>
+        </div>
+        <p id="moodThanks" class="feature-caption mood-feedback" aria-live="polite"></p>
+        <div id="moodChart" class="mood-chart" aria-label="Recent mood check-ins"></div>
+        <button type="button" class="mini-action-btn" onclick="clearMoodHistory()">Clear my check-ins</button>
+      </section>
+      <section class="panel breathing-panel">
+        <div class="panel-head"><h2>60-second breathing pause</h2><p>Follow a gentle inhale, hold, and exhale rhythm. Stop whenever you like.</p></div>
+        <div id="breathingLotus" class="breathing-lotus" data-phase="ready" role="timer" aria-live="polite">
+          <div class="lotus-ring lotus-ring-one"></div><div class="lotus-ring lotus-ring-two"></div><div class="lotus-ring lotus-ring-three"></div>
+          <div class="lotus-center"><span id="breathingCue">Ready</span><strong id="breathingTimer">60</strong></div>
+        </div>
+        <div class="breathing-actions"><button type="button" class="btn" id="breathingStart" onclick="startBreathing()">Begin</button><button type="button" class="btn btn-ghost" id="breathingStop" onclick="stopBreathing()" disabled>Stop</button></div>
+        <p class="support-note">This is a relaxation exercise, not medical treatment. Return to your normal breathing if you feel uncomfortable.</p>
+      </section>
+    </div>
+    <section class="panel listener-panel">
+      <div class="panel-head"><h2>Talk with Aarav</h2><p>A gentle AI listener for reflection and everyday support—not a therapist or emergency service. Messages are sent to the configured AI service and are not saved by this page.</p></div>
+      <div class="support-prompts" aria-label="Conversation starters">
+        <button type="button" class="support-prompt" data-prompt="I feel overwhelmed and could use a moment to sort things out." onclick="useAaravPrompt(this.dataset.prompt)">I feel overwhelmed</button>
+        <button type="button" class="support-prompt" data-prompt="Can you help me break a task into a small first step?" onclick="useAaravPrompt(this.dataset.prompt)">Help me find a first step</button>
+        <button type="button" class="support-prompt" data-prompt="I want to reflect on something that went well today." onclick="useAaravPrompt(this.dataset.prompt)">Something went well today</button>
+      </div>
+      <label class="field"><span class="field-label" for="aaravMessage">WHAT'S ON YOUR MIND?</span><textarea id="aaravMessage" rows="3" maxlength="1200" placeholder="Share only what feels comfortable. Please don't include identifying details."></textarea></label>
+      <button type="button" class="btn" id="aaravSend" onclick="talkToAarav()">Send to Aarav</button>
+      <div id="aaravReply" class="listener-reply" aria-live="polite"></div>
+      <p class="support-note">If you may hurt yourself or someone else, call 112 or Tele-MANAS at 14416 in India, or reach local emergency support now.</p>
+    </section>
+    <section class="panel peer-panel">
+      <div class="panel-head"><h2>Peer Circle</h2><p>A small, anonymous reflection wall. This demo feed is stored only in your browser and is not visible to other people.</p></div>
+      <label class="field"><span class="field-label" for="peerPost">SHARE A KIND NOTE OR QUESTION (280 CHARACTERS)</span><textarea id="peerPost" rows="2" maxlength="280" placeholder="No names or personal details, please."></textarea></label>
+      <div class="peer-compose-meta"><p id="peerStatus" class="feature-caption" aria-live="polite"></p><p id="peerCount" class="feature-caption peer-count">0 / 280</p></div>
+      <button type="button" class="btn" onclick="postPeerNote()">Add to my local feed</button>
+      <div id="peerFeed" class="peer-feed"></div>
+    </section>
+  </main>
+
+  <main id="quiz-page" class="app-section-page career-tools-page" data-app-page="quiz" hidden>
+    <section class="feature-hero career-tools-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">15 QUESTIONS · NO WRONG ANSWERS</span>
+        <h1>Find what <em>fits you.</em></h1>
+        <p>A quick, low-pressure way to explore what you enjoy and where you might want to grow. Your answers stay in this browser.</p>
+      </div>
+      <div class="career-hero-collage quiz-hero-collage" aria-label="Students exploring ideas and learning together">
+        <figure class="career-photo-main">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Students sharing ideas while studying together" loading="lazy" decoding="async">
+          <figcaption>Find what makes you curious</figcaption>
+        </figure>
+        <figure class="career-photo-float">
+          <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="A teacher guiding students through a lesson" loading="lazy" decoding="async">
+        </figure>
+        <span class="career-photo-sticker"><strong>15</strong> small questions<br>big possibilities ✨</span>
+      </div>
+    </section>
+    <section class="panel quiz-panel" aria-labelledby="quiz-title">
+      <div class="quiz-topline"><div><span class="mono-label">CAREER INTEREST QUIZ</span><h2 id="quiz-title">A little about how you think</h2></div><span id="quizStepLabel" class="quiz-step-label">Question 1 of 15</span></div>
+      <div class="quiz-progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0"><span id="quizProgressFill"></span></div>
+      <div id="quizQuestion" class="quiz-question" aria-live="polite"></div>
+      <div class="quiz-actions"><button type="button" id="quizBack" class="btn btn-ghost" onclick="moveQuiz(-1)" disabled>← Back</button><button type="button" id="quizNext" class="btn" onclick="moveQuiz(1)">Next →</button></div>
+      <div id="quizResults" class="quiz-results" aria-live="polite"></div>
+      <div id="savedQuizResult" class="saved-quiz-result"></div>
+    </section>
+    <p class="career-data-note">This quiz is for exploration, not a formal assessment or admission recommendation.</p>
+  </main>
+
+  <main id="explorer-page" class="app-section-page career-tools-page" data-app-page="explorer" hidden>
+    <section class="feature-hero career-tools-hero">
+      <div class="feature-hero-copy">
+        <span class="mono-label">CAREER EXPLORER · INDIA</span>
+        <h1>Curiosity is a <em>good start.</em></h1>
+        <p>Browse real career paths, see what the work involves, compare options, and save the ones you want to revisit.</p>
+      </div>
+      <div class="career-hero-collage explorer-hero-collage" aria-label="A glimpse of different ways people work and learn">
+        <figure class="career-photo-main">
+          <img src="https://images.pexels.com/photos/3184436/pexels-photo-3184436.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="Professionals collaborating around a laptop" loading="lazy" decoding="async">
+          <figcaption>Many paths. Your kind of work.</figcaption>
+        </figure>
+        <figure class="career-photo-float">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="A person working on a laptop and exploring ideas" loading="lazy" decoding="async">
+        </figure>
+        <span class="career-photo-sticker"><strong>27</strong> paths to explore<br>one step at a time 🧭</span>
+      </div>
+    </section>
+    <section class="panel explorer-panel">
+      <div class="panel-head"><h2>Explore careers</h2><p>Search by role or filter by interest area and school stream.</p></div>
+      <div class="explorer-filters">
+        <label class="field"><span class="field-label" for="careerSearch">SEARCH</span><input id="careerSearch" type="search" placeholder="Try product designer, doctor, finance…" oninput="renderCareerExplorer()"></label>
+        <label class="field"><span class="field-label" for="careerFieldFilter">FIELD</span><select id="careerFieldFilter" onchange="renderCareerExplorer()"><option value="all">All fields</option></select></label>
+        <label class="field"><span class="field-label" for="careerStreamFilter">STREAM</span><select id="careerStreamFilter" onchange="renderCareerExplorer()"><option value="all">All streams</option><option>Science</option><option>Commerce</option><option>Arts</option><option>Any</option></select></label>
+      </div>
+      <p id="careerExplorerStatus" class="feature-caption" aria-live="polite">Loading career paths…</p>
+      <div id="careerGrid" class="career-grid"></div>
+    </section>
+    <section class="panel career-compare-panel">
+      <div class="panel-head"><span class="mono-label">SIDE-BY-SIDE</span><h2>Compare two careers</h2><p>Compare typical study length, preparation difficulty, demand, and approximate pay.</p></div>
+      <div class="career-compare-controls">
+        <label class="field"><span class="field-label" for="compareCareerOne">CAREER ONE</span><select id="compareCareerOne"></select></label>
+        <label class="field"><span class="field-label" for="compareCareerTwo">CAREER TWO</span><select id="compareCareerTwo"></select></label>
+      </div>
+      <div id="careerComparison" class="career-comparison"></div>
+    </section>
+    <section class="panel saved-careers-panel">
+      <div class="panel-head"><span class="mono-label">YOUR SHORTLIST</span><h2>Saved careers <span id="savedCareerCount" class="saved-count">0</span></h2><p>Saved on this device only.</p></div>
+      <div id="savedCareerList" class="saved-career-list"></div>
+    </section>
+    <p class="career-data-note">Salary and details are approximate. Verify with official sources.</p>
+  </main>
+
+  <div id="careerModal" class="career-modal" role="dialog" aria-modal="true" aria-labelledby="careerModalTitle" hidden onclick="if(event.target===this) closeCareerModal()">
+    <div class="career-modal-dialog">
+      <div class="career-modal-toolbar"><span class="mono-label">CAREER FIELD GUIDE</span><button type="button" id="careerModalClose" class="career-modal-close" aria-label="Close career details" onclick="closeCareerModal()">×</button></div>
+      <div id="careerModalContent"></div>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <span>CareerCompass &bull; Built with Gemini AI</span>
@@ -1303,6 +1528,7 @@ Provide all 5 careers in this exact JSON format.`;
     displayCareers();
     displayComparison();
     displaySkillGap();
+    renderCareerVisuals();
   }
 
   function normalizeCareer(c, idx){
@@ -1780,5 +2006,8 @@ Provide all 5 careers in this exact JSON format.`;
     checkServerHealth();
   });
 </script>
+<script src="/features.js" defer></script>
+<script src="/careers-data.js" defer></script>
+<script src="/career-tools.js" defer></script>
 </body>
 </html>
